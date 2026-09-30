@@ -1,0 +1,42 @@
+{
+  "compileType": "miniprogram",
+  "libVersion": "3.8.0",
+  "packNpmManually": false,
+  "packNpmRelationList": [],
+  "setting": {
+    "coverView": true,
+    "es6": true,
+    "minified": true,
+    "postcss": true,
+    "enhance": true,
+    "precompile": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false
+  },
+  "appid": "wxf74e3c956d353694",
+  "projectname": "fba-profit-calculator",
+  "description": "亚马逊FBA利润计算器",
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  }
+}

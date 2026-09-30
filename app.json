@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/calc/calc",
+    "pages/history/history"
+  ],
+  "window": {
+    "backgroundColor": "#F5F6FA",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FF9900",
+    "navigationBarTitleText": "FBA利润计算器",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#9AA0A6",
+    "selectedColor": "#FF9900",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/calc/calc",
+        "text": "计算",
+        "iconPath": "assets/tab-calc.png",
+        "selectedIconPath": "assets/tab-calc-active.png"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "text": "历史",
+        "iconPath": "assets/tab-history.png",
+        "selectedIconPath": "assets/tab-history-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}
