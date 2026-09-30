@@ -32,7 +32,18 @@ Page({
     result: {}
   },
 
-  onLoad() {
+  onLoad(options) {
+    // 支持从分享卡片进入：还原站点与类目
+    if (options && options.site && fees.SITES[options.site]) {
+      this.setData({
+        site: options.site,
+        taxRate: fees.TAX_RATES[options.site] || 0
+      })
+    }
+    if (options && options.category) {
+      const idx = this.data.categories.findIndex(c => c.key === options.category)
+      if (idx >= 0) this.setData({ categoryIdx: idx })
+    }
     this.recalc()
   },
 
@@ -118,6 +129,15 @@ Page({
 
     wx.showToast({ title: '已保存', icon: 'success' })
     wx.setTabBarBadge({ index: 1, text: String(list.length) })
+  },
+
+  // 分享给好友：把当前站点/类目带过去，对方打开可快速进入同站点
+  onShareAppMessage() {
+    const r = this.data.result || {}
+    return {
+      title: `我在算亚马逊${this.data.sites[this.data.site].name}站的利润，单品净赚${r.symbol || ''}${r.netProfit || 0}` ,
+      path: `/pages/calc/calc?site=${this.data.site}&category=${this.data.categories[this.data.categoryIdx].key}`
+    }
   },
 
   // 供历史页读取的常量导出

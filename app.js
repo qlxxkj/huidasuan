@@ -12,7 +12,8 @@ App({
       MX: 'MXN',
       JP: 'JPY',
       AU: 'AUD',
-      CN: 'CNY'
+      SG: 'SGD',
+      AE: 'AED'
     },
     fxRateToUSD: {
       USD: 1,
@@ -22,7 +23,8 @@ App({
       MXN: 0.056,
       JPY: 0.0068,
       AUD: 0.66,
-      CNY: 0.138
+      SGD: 0.74,
+      AED: 0.27
     }
   },
   onLaunch() {}

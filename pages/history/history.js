@@ -61,5 +61,13 @@ Page({
 
   exportCSV() {
     H.copyToClipboard(H.exportCSV(H.getRecords()))
+  },
+
+  // 分享给好友：带过去历史页
+  onShareAppMessage() {
+    return {
+      title: 'FBA利润计算器 - 历史记录',
+      path: '/pages/history/history'
+    }
   }
 })

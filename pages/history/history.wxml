@@ -33,6 +33,7 @@
 
   <view wx:if="{{records.length > 0}}">
     <button class="btn btn-plain" bindtap="clearAll">清空全部记录</button>
+    <button class="btn btn-ghost" style="margin-top:16rpx;" open-type="share">分享给好友</button>
   </view>
 
   <view class="hint" style="text-align:center;margin-top:24rpx;">

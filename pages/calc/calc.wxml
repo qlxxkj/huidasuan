@@ -170,7 +170,8 @@
 
   <!-- 操作 -->
   <button class="btn" bindtap="saveRecord">保存本单到历史</button>
-  <view class="hint" style="text-align:center;">
+  <button class="btn btn-ghost" style="margin-top:16rpx;" open-type="share">分享给好友</button>
+  <view class="hint" style="text-align:center;margin-top:12rpx;">
     数据为演示基准费率，请以亚马逊官方最新公告为准。
   </view>
 </view>
