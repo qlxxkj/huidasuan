@@ -1,6 +1,8 @@
 const H = require('../../utils/history.js')
 const P = require('../../utils/pick.js')
 const profile = require('../../utils/profile.js')
+// 版本号与 CI 上传脚本(upload-ci.mjs)读的是同一个 package.json，直接读它最准确
+const APP_VERSION = require('../../package.json').version
 
 Page({
   data: {
@@ -8,22 +10,12 @@ Page({
     nick: '',
     profitCount: 0,
     pickCount: 0,
-    version: '0.0.0'
+    version: APP_VERSION
   },
 
   onLoad() {
     const p = profile.get()
     this.setData({ avatar: p.avatar, nick: p.nick })
-    // 优先读真机实际上传的版本（CI 用 miniprogram-ci 传入的 version），
-    // 读不到再回退 package.json
-    let v = ''
-    try {
-      v = wx.getAccountInfoSync().miniProgram.version || ''
-    } catch (e) {}
-    if (!v) {
-      try { v = require('../../package.json').version } catch (e) {}
-    }
-    this.setData({ version: v || 'dev' })
   },
 
   onShow() {
