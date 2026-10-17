@@ -10,8 +10,8 @@
     </view>
     <view class="field-row">
       <view class="field-label">销售国家</view>
-      <picker range="{{countries}}" value="{{countryIdx}}" bindchange="onCountry">
-        <view class="pick-v">{{countries[countryIdx]}} <text class="sub">▾</text></view>
+      <picker range="{{countryNames}}" value="{{countryIdx}}" bindchange="onCountry">
+        <view class="pick-v">{{basic.country}} <text class="sub">▾</text></view>
       </picker>
     </view>
     <view class="field-row">

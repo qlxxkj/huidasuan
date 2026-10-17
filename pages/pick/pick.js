@@ -169,12 +169,31 @@ function initGrid(dims, factory) {
   return dims.map(d => d.items.map(factory))
 }
 
-const COUNTRIES = ['US', 'UK', 'DE', 'JP', 'CA', 'FR', 'IT', 'ES']
+const COUNTRIES = [
+  { code: 'US', name: '美国' },
+  { code: 'UK', name: '英国' },
+  { code: 'DE', name: '德国' },
+  { code: 'JP', name: '日本' },
+  { code: 'CA', name: '加拿大' },
+  { code: 'FR', name: '法国' },
+  { code: 'IT', name: '意大利' },
+  { code: 'ES', name: '西班牙' }
+]
+
+function countryNames() {
+  return COUNTRIES.map(c => c.name)
+}
+
+function countryStr(e) {
+  const c = COUNTRIES[Number(e)]
+  if (!c) return ''
+  return `${c.name}(${c.code})`
+}
 
 Page({
   data: {
-    basic: { name: '', price: '', country: 'US' },
-    countries: COUNTRIES,
+    basic: { name: '', price: '', country: countryStr(0) },
+    countryNames: countryNames(),
     countryIdx: 0,
     dims: DIMS,
     ratings: initGrid(DIMS, () => 0),
@@ -186,7 +205,7 @@ Page({
 
   onCountry(e) {
     const idx = Number(e.detail.value)
-    this.setData({ countryIdx: idx, 'basic.country': COUNTRIES[idx] })
+    this.setData({ countryIdx: idx, 'basic.country': countryStr(idx) })
   },
 
   onBasic(e) {
