@@ -129,31 +129,127 @@
   flex-shrink: 0;
 }
 
-.score-chips {
-  display: flex;
-  gap: 10rpx;
-}
-
-.chip {
-  width: 52rpx;
-  height: 52rpx;
-  border-radius: 12rpx;
+/* 自动评分徽标（1-5 分，颜色按档位） */
+.badge {
+  min-width: 64rpx;
+  height: 64rpx;
+  border-radius: 14rpx;
+  padding: 0 12rpx;
   background: #F0F1F5;
-  color: #4B5563;
-  font-size: 28rpx;
-  font-weight: 600;
+  color: #9AA0A6;
+  font-size: 32rpx;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s;
+}
+
+.badge.b1 { background: #FEE2E2; color: #DC2626; }
+.badge.b2 { background: #FEF3C7; color: #D97706; }
+.badge.b3 { background: #F3F4F6; color: #6B7280; }
+.badge.b4 { background: #DBEAFE; color: #2563EB; }
+.badge.b5 { background: #DCFCE7; color: #16A34A; }
+
+/* 枚举可点选 chips（平铺文字选项） */
+.enum-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.chip {
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  background: #F0F1F5;
+  color: #4B5563;
+  font-size: 24rpx;
+  font-weight: 500;
   border: 2rpx solid transparent;
+  transition: all 0.15s;
 }
 
 .chip.on {
-  background: #FF9900;
-  color: #fff;
-  border-color: #FF9900;
-  box-shadow: 0 4rpx 12rpx rgba(255, 153, 0, 0.3);
+  background: #FFF4E6;
+  color: #FF7A00;
+  font-weight: 600;
+  border-color: #FFD9B0;
+}
+
+/* 问号（查看评分规则） */
+.qmark {
+  flex-shrink: 0;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: #FFF4E6;
+  color: #FF7A00;
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+/* 规则弹层 */
+.rule-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+}
+
+.rule-sheet {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 28rpx;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.rule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.rule-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1F2430;
+}
+
+.rule-close {
+  font-size: 32rpx;
+  color: #9AA0A6;
+  padding: 4rpx 12rpx;
+}
+
+.rule-grade-row {
+  font-size: 26rpx;
+  color: #4B5563;
+  padding: 10rpx 0;
+  border-bottom: 2rpx solid #F0F1F5;
+}
+
+.rule-source {
+  margin-top: 16rpx;
+  padding: 16rpx;
+  background: #F7F8FB;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  color: #9AA0A6;
+  line-height: 1.6;
 }
 
 /* 维度小结 */
