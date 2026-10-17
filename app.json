@@ -6,7 +6,8 @@
     "pages/history/history",
     "pages/pick-form/pick-form",
     "pages/mypick/mypick",
-    "pages/calc-detail/calc-detail"
+    "pages/calc-detail/calc-detail",
+    "pages/shared-list/shared-list"
   ],
   "window": {
     "backgroundColor": "#F5F6FA",

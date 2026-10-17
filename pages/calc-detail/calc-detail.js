@@ -17,7 +17,7 @@ Page({
       { key: 'oversize', label: '大件', rate: 12 }
     ],
     categoryIdx: 0,
-    form: { price: '', purchaseCost: '', firstMile: '', side: '', weight: '', vatRate: '', dutyRate: '', adCpc: '', monthlyAds: '', other: '' },
+    form: { name: '', price: '', purchaseCost: '', firstMile: '', side: '', weight: '', vatRate: '', dutyRate: '', adCpc: '', monthlyAds: '', other: '' },
     result: {}
   },
 
@@ -39,6 +39,7 @@ Page({
   loadRecord(rec) {
     // 旧记录没有 form/category 字段：用结果反推
     const form = rec.form || {
+      name: rec.name || '',
       price: rec.price, purchaseCost: rec.purchaseCost, firstMile: rec.firstMile,
       side: '', weight: '', vatRate: rec.rates ? rec.rates.vatRate : '',
       dutyRate: rec.rates ? rec.rates.dutyRate : '', adCpc: rec.adFee, monthlyAds: '', other: rec.other
@@ -102,6 +103,7 @@ Page({
     const record = {
       id: this.data.isNew ? Date.now() : this.data.id,
       site: this.data.site,
+      name: this.data.form.name,
       category: this.data.categories[this.data.categoryIdx].key,
       form: { ...this.data.form },
       result: r,
@@ -152,8 +154,9 @@ Page({
 
   onShareAppMessage() {
     const r = this.data.result || {}
+    const prod = this.data.form.name || '新品'
     return {
-      title: `我在算亚马逊${this.data.sites[this.data.site].name}站的利润，单品净赚${r.symbol || ''}${r.netProfit || 0}`,
+      title: `我在算亚马逊${this.data.sites[this.data.site].name}站「${prod}」的利润，单品净赚${r.symbol || ''}${r.netProfit || 0}`,
       path: `/pages/calc/calc?site=${this.data.site}`
     }
   }

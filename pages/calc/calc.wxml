@@ -21,6 +21,12 @@
   <view class="card">
     <view class="card-title">售价与类目</view>
     <view class="field-row">
+      <view class="field-label">产品名称</view>
+      <view class="field-input">
+        <input value="{{form.name}}" data-key="name" bindinput="onInput" placeholder="产品名（选填）" style="width:100%;" />
+      </view>
+    </view>
+    <view class="field-row">
       <view class="field-label">售价 <text class="sub">({{sites[site].code}})</text></view>
       <view class="field-input">
         <input type="digit" value="{{form.price}}" data-key="price" bindinput="onInput" placeholder="0" />

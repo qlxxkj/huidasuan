@@ -1,0 +1,45 @@
+<!-- pages/shared-list/shared-list.wxml -->
+<view class="container">
+
+  <view class="card">
+    <view class="card-title">{{title}}</view>
+
+    <block wx:if="{{type === 'profit'}}">
+      <view wx:for="{{list}}" wx:key="id" class="rec">
+        <view style="display:flex;justify-content:space-between;align-items:center;">
+          <view>
+            <text class="rec-site">{{item.name || item.siteName}} · {{item.currency}}</text>
+            <text class="rec-time">{{item.timeShort}}</text>
+          </view>
+          <text class="rec-profit {{item.netProfit >= 0 ? 'pos' : 'neg'}}">{{item.symbol}}{{item.netProfit}}</text>
+        </view>
+        <view class="rec-detail">
+          售价 {{item.symbol}}{{item.price}} · 总成本 {{item.symbol}}{{item.totalCost}} · 利润率 {{item.profitMargin}}%
+        </view>
+      </view>
+    </block>
+
+    <block wx:if="{{type === 'pick'}}">
+      <view wx:for="{{list}}" wx:key="id" class="rec">
+        <view style="display:flex;justify-content:space-between;align-items:center;">
+          <view>
+            <text class="rec-site">{{item.name || '未命名'}}</text>
+            <text class="rec-time">{{item.timeShort}}</text>
+          </view>
+          <text class="rec-profit {{item.empty ? 'neutral' : (parseFloat(item.score) >= 3.8 ? 'pos' : (parseFloat(item.score) < 3.0 ? 'neg' : 'mid'))}}">{{item.empty ? '—' : item.score}}</text>
+        </view>
+        <view class="rec-detail">
+          {{item.country}}{{item.price ? ' · 售价 $' + item.price : ''}} · {{item.empty ? '未评分' : item.verdict}}
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{list.length === 0}}" class="empty">
+      <text style="font-size:80rpx;">📭</text>
+      <view style="color:#9AA0A6;font-size:26rpx;margin-top:16rpx;">数据缺失，让好友重新分享试试</view>
+    </view>
+  </view>
+
+  <button class="btn" open-type="share">把这份列表再转给朋友</button>
+
+</view>

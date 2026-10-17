@@ -50,10 +50,22 @@ Page({
     H.copyToClipboard(H.exportCSV(H.getRecords()))
   },
 
-  onShareAppMessage() {
+  // 每条只取展示需要的字段，控制 URL 长度
+  slimRecord(r) {
     return {
-      title: 'FBA利润计算器 - 我的利润',
-      path: '/pages/calc/calc'
+      id: r.id, time: r.time, siteName: r.siteName, currency: r.currency, symbol: r.symbol,
+      price: r.price, totalCost: r.totalCost, profitMargin: r.profitMargin, netProfit: r.netProfit,
+      name: r.name || ''
+    }
+  },
+
+  onShareAppMessage() {
+    const list = this.data.records
+    const max = Math.min(list.length, 20)
+    const slim = list.slice(0, max).map(r => this.slimRecord(r))
+    return {
+      title: `我在FBA利润计算器存了${list.length}条利润记录，看看？`,
+      path: `/pages/shared-list/shared-list?type=profit&d=${encodeURIComponent(JSON.stringify(slim))}`
     }
   }
 })

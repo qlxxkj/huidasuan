@@ -18,6 +18,7 @@ Page({
     ],
     categoryIdx: 0,
     form: {
+      name: '',
       price: '',
       purchaseCost: '',
       firstMile: '',
@@ -102,6 +103,7 @@ Page({
     const record = {
       id: Date.now(),
       site: this.data.site,
+      name: this.data.form.name,
       category: this.data.categories[this.data.categoryIdx].key,
       form: { ...this.data.form },
       result: r,
@@ -136,8 +138,9 @@ Page({
   // 分享给好友：把当前站点/类目带过去，对方打开可快速进入同站点
   onShareAppMessage() {
     const r = this.data.result || {}
+    const prod = this.data.form.name ? this.data.form.name : '新品'
     return {
-      title: `我在算亚马逊${this.data.sites[this.data.site].name}站的利润，单品净赚${r.symbol || ''}${r.netProfit || 0}` ,
+      title: `我在算亚马逊${this.data.sites[this.data.site].name}站「${prod}」的利润，单品净赚${r.symbol || ''}${r.netProfit || 0}`,
       path: `/pages/calc/calc?site=${this.data.site}&category=${this.data.categories[this.data.categoryIdx].key}`
     }
   },

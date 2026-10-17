@@ -46,7 +46,20 @@ Page({
     })
   },
 
+  slimRecord(r) {
+    return {
+      id: r.id, time: r.time, name: r.name || '', country: r.country || '',
+      price: r.price != null ? r.price : '', inputs: r.inputs || []
+    }
+  },
+
   onShareAppMessage() {
-    return { title: 'FBA 选品评分', path: '/pages/pick/pick' }
+    const list = this.data.picks
+    const max = Math.min(list.length, 10)
+    const slim = list.slice(0, max).map(r => this.slimRecord(r))
+    return {
+      title: `我在FBA选品评分存了${list.length}条选品，看看？`,
+      path: `/pages/shared-list/shared-list?type=pick&d=${encodeURIComponent(JSON.stringify(slim))}`
+    }
   }
 })

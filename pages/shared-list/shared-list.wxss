@@ -1,0 +1,42 @@
+/* pages/shared-list/shared-list.wxss */
+
+.rec {
+  padding: 20rpx;
+  border-radius: 14rpx;
+  background: #F7F8FB;
+  margin-bottom: 16rpx;
+}
+
+.rec-site {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1F2430;
+  margin-right: 12rpx;
+}
+
+.rec-time {
+  font-size: 22rpx;
+  color: #9AA0A6;
+}
+
+.rec-profit {
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.rec-profit.neutral { color: #9AA0A6; }
+
+.rec-detail {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #6B7280;
+}
+
+.empty {
+  text-align: center;
+  padding: 60rpx 0;
+}
+
+.empty text:first-child {
+  display: block;
+}

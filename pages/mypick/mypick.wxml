@@ -26,6 +26,7 @@
   </view>
 
   <button class="btn" bindtap="addNew">＋ 新建选品评分</button>
+  <button class="btn btn-ghost" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" open-type="share">分享给好友</button>
   <button class="btn btn-plain" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" bindtap="clearAll">清空选品</button>
 
   <view class="hint" style="text-align:center;margin-top:24rpx;">点按记录进入详情查看 / 编辑 / 删除</view>
