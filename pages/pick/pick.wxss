@@ -260,10 +260,15 @@
 .legend-row {
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  gap: 16rpx;
   padding: 8rpx 0;
   font-size: 24rpx;
   color: #4B5563;
 }
 
-.legend-row .sub { flex-shrink: 0; width: 100rpx; color: #9AA0A6; font-weight: 600; }
+.legend-row .sub {
+  flex-shrink: 0;
+  min-width: 120rpx;
+  color: #9AA0A6;
+  font-weight: 600;
+}

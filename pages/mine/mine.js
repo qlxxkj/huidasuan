@@ -14,8 +14,16 @@ Page({
   onLoad() {
     const p = profile.get()
     this.setData({ avatar: p.avatar, nick: p.nick })
-    const pkg = require('../../package.json')
-    this.setData({ version: pkg.version })
+    // 优先读真机实际上传的版本（CI 用 miniprogram-ci 传入的 version），
+    // 读不到再回退 package.json
+    let v = ''
+    try {
+      v = wx.getAccountInfoSync().miniProgram.version || ''
+    } catch (e) {}
+    if (!v) {
+      try { v = require('../../package.json').version } catch (e) {}
+    }
+    this.setData({ version: v || 'dev' })
   },
 
   onShow() {

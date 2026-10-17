@@ -89,7 +89,7 @@
       <view class="legend-row"><text class="sub">≥ 3.8</text><text>优质，优先测款（200-300件）</text></view>
       <view class="legend-row"><text class="sub">3.3 – 3.7</text><text>合格，需优化后复测</text></view>
       <view class="legend-row"><text class="sub">3.0 – 3.2</text><text>边缘，视资源决定</text></view>
-      <view class="legend-row"><text class="sub">&lt; 3.0</text><text>直接放弃</text></view>
+      <view class="legend-row"><text class="sub">＜ 3.0</text><text>直接放弃</text></view>
     </view>
   </view>
 
