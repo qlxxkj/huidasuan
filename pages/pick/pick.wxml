@@ -39,11 +39,12 @@
 
       <view class="dim-input-row" wx:if="{{item.type !== 'enum'}}">
         <input
-          class="inp dim-inp"
+          class="inp dim-inp {{item.id == 14 ? 'dim-readonly' : ''}}"
           type="digit"
           value="{{inputs[di][ii]}}"
           data-di="{{di}}" data-ii="{{ii}}"
           bindinput="onIndicatorInput"
+          disabled="{{item.id == 14}}"
           placeholder="{{item.ph || '填写数据'}}"
         />
         <text class="unit dim-hint" wx:if="{{item.unit}}">{{item.unit}}</text>

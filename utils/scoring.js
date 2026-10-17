@@ -80,7 +80,7 @@ const DIMS = [
         thresholds: { min4: 18, min3: 12, min2: 8, min1: 5 },
         rules: { grades: ['≥18% = 5分', '12–17% = 4分', '8–11% = 3分', '5–7% = 2分', '<5% = 1分'],
           source: '竞品销量 ÷（搜量×10-15%点击率）反推；类目基准。Home12-18%；Pet10-15%；电子8-12%；服装5-10%。' } },
-      { id: 14, label: '盈亏平衡 ROI', type: 'num-down', unit: 'x', ph: 'ROI',
+      { id: 14, label: '盈亏平衡 ROI', type: 'num-down', unit: 'x', ph: '自动=1/毛利率',
         thresholds: { max1: 2.5, max2: 3, max3: 4, max4: 5 },
         rules: { grades: ['≤2.5 = 5分', '2.51–3 = 4分', '3.01–4 = 3分', '4.01–5 = 2分', '>5 = 1分'],
           source: 'ROI = 1/毛利率（毛利率用小数，40%→0.4→ROI=2.5）。' } }
@@ -128,9 +128,35 @@ function autoScore(item, raw) {
   return 1
 }
 
+// 盈亏 ROI 位置（维度4 ads 的第3项，index 2）；毛利率在维度3 profit 的第0项
+const ROI_CELL = [4, 2]
+const MARGIN_CELL = [3, 0]
+
+// 由毛利率输入算出 ROI 的显示值（保留 2 位）；没填或 0 返回 ''
+function roiFromInputs(inputs) {
+  const raw = inputs && inputs[MARGIN_CELL[0]] ? inputs[MARGIN_CELL[0]][MARGIN_CELL[1]] : ''
+  const m = parseFloat(raw)
+  if (!m || isNaN(m) || m <= 0) return ''
+  return (100 / m).toFixed(2)
+}
+
 // 由输入数组算出评分矩阵（维度×指标）
+// 自动联动：ROI 按毛利率 = 1/毛利率 直接算，不经用户手填（inputs 里写显示值保持同步）
 function buildRatings(inputs) {
-  return DIMS.map((dim, di) => dim.items.map((item, ii) => autoScore(item, inputs && inputs[di] ? inputs[di][ii] : '')))
+  const roiDisplay = roiFromInputs(inputs)
+  const grid = DIMS.map((dim, di) => dim.items.map((item, ii) => {
+    if (di === ROI_CELL[0] && ii === ROI_CELL[1]) {
+      const val = inputs && inputs[di] ? inputs[di][ii] : ''
+      if (!val) return 0
+      return autoScore(item, roiDisplay || val)
+    }
+    return autoScore(item, inputs && inputs[di] ? inputs[di][ii] : '')
+  }))
+  if (roiDisplay !== '') {
+    grid[ROI_CELL[0]][ROI_CELL[1]] = roiDisplay
+    if (inputs && inputs[ROI_CELL[0]]) inputs[ROI_CELL[0]][ROI_CELL[1]] = roiDisplay
+  }
+  return grid
 }
 
 // 由输入数组重算单条
@@ -177,6 +203,7 @@ function getVerdict(scoreStr) {
 
 module.exports = {
   DIMS,
+  ROI_CELL,
   autoScore,
   buildRatings,
   scoreOf,

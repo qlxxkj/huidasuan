@@ -272,3 +272,6 @@
   color: #9AA0A6;
   font-weight: 600;
 }
+
+/* 自动计算项（盈亏 ROI）：只读样式 */
+.dim-readonly { opacity: 0.75; background: #EEF1F6; }

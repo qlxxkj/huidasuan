@@ -1,6 +1,6 @@
 const P = require('../../utils/pick.js')
 const S = require('../../utils/scoring.js')
-const { DIMS, autoScore, calcDimWtd, calcTotal, getVerdict, initGrid } = S
+const { DIMS, autoScore, calcDimWtd, calcTotal, getVerdict, initGrid, ROI_CELL } = S
 // 国家站点与计算页保持一致（data/fees.js SITES）
 const fees = require('../../data/fees.js')
 const SITE_IDS = fees.SITE_IDS
@@ -69,9 +69,23 @@ Page({
     row[ii] = rating
     this.setData({
       [`inputs[${di}][${ii}]`]: raw,
-      [`ratings[${di}]`]: row,
+      [`ratings[${di}]`]: row
+    })
+    // 毛利率（利润模型维度第1项）变化时自动算盈亏 ROI
+    if (di === 3 && ii === 0) this.syncRoi()
+    this.setData({
       [`dimWtd[${di}]`]: calcDimWtd(di, this.data.ratings, DIMS),
       verdict: getVerdict(calcTotal(this.data.ratings, DIMS))
+    })
+  },
+
+  syncRoi() {
+    const [rDi, rIi] = ROI_CELL
+    const m = parseFloat(this.data.inputs[3][0])
+    const roi = (m && m > 0) ? (100 / m).toFixed(2) : ''
+    this.setData({
+      [`inputs[${rDi}][${rIi}]`]: roi,
+      [`ratings[${rDi}][${rIi}]`]: roi ? autoScore(DIMS[rDi].items[rIi], roi) : 0
     })
   },
 
