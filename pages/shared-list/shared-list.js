@@ -1,5 +1,6 @@
 const S = require('../../utils/scoring.js')
 
+
 // 分享列表只带最近的记录（URL 长度有限）
 const MAX_SHARED = 10
 
@@ -26,10 +27,11 @@ Page({
       const d = new Date(r.time)
       r.timeShort = isNaN(d) ? '' : `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
       if (type === 'pick') {
-        const score = S.scoreOf(r.inputs)
+        // 分享时带上了保存的得分就优先用，没有才按 inputs 重算
+        const score = (r.score != null && r.score !== '') ? String(r.score) : S.scoreOf(r.inputs)
         r.score = score
-        r.verdict = S.getVerdict(score).text
-        r.empty = !score
+        r.verdict = r.verdict || S.getVerdict(score).text
+        r.empty = !score || score === '—'
       }
     })
     this.setData({

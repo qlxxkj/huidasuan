@@ -15,10 +15,11 @@ Page({
     list.forEach(r => {
       const d = new Date(r.time)
       r.timeShort = `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-      const score = S.scoreOf(r.inputs)
+      // 优先用保存时记录的得分；无（旧数据）才按 inputs 重算
+      const score = (r.score != null && r.score !== '') ? String(r.score) : S.scoreOf(r.inputs)
       r.score = score
       r.verdict = S.getVerdict(score).text
-      r.empty = !score
+      r.empty = !score || score === '—'
     })
     this.setData({ picks: list })
   },
@@ -49,7 +50,8 @@ Page({
   slimRecord(r) {
     return {
       id: r.id, time: r.time, name: r.name || '', country: r.country || '',
-      price: r.price != null ? r.price : '', inputs: r.inputs || []
+      price: r.price != null ? r.price : '', score: r.score, verdict: r.verdict,
+      inputs: r.inputs || []
     }
   },
 
