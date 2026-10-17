@@ -10,7 +10,7 @@
     </view>
     <view class="field-row">
       <view class="field-label">销售国家</view>
-      <picker range="{{countryIds}}" value="{{countryIdx}}" bindchange="onCountry">
+      <picker range="{{countries}}" value="{{countryIdx}}" bindchange="onCountry">
         <view class="pick-v">{{countries[countryIdx]}} <text class="sub">▾</text></view>
       </picker>
     </view>
@@ -34,32 +34,39 @@
       <view class="dim-row-top">
         <view class="dim-id">{{item.id}}</view>
         <view class="dim-name">{{item.label}}</view>
+        <view class="qmark" data-di="{{di}}" data-ii="{{ii}}" bindtap="openRule">?</view>
       </view>
 
-      <view class="dim-input-row" wx:if="{{item.input}}">
+      <!-- 数值输入 -->
+      <view class="dim-input-row" wx:if="{{item.type !== 'enum'}}">
         <input
           class="inp dim-inp"
-          type="{{item.inputType || 'digit'}}"
+          type="digit"
           value="{{inputs[di][ii]}}"
-          data-dim="{{di}}" data-item="{{ii}}"
-          bindinput="onInputTap"
+          data-di="{{di}}" data-ii="{{ii}}"
+          bindinput="onIndicatorInput"
           placeholder="{{item.ph || '填写数据'}}"
         />
+        <text class="unit dim-hint" wx:if="{{item.unit}}">{{item.unit}}</text>
       </view>
 
-      <view class="score-row">
-        <view class="score-lbl">评分</view>
-        <view class="score-chips">
-          <view
-            wx:for="{{[1,2,3,4,5]}}"
-            wx:key="*this"
-            wx:for-item="s"
-            class="chip {{ratings[di][ii] === s ? 'on' : ''}}"
-            data-dim="{{di}}" data-item="{{ii}}" data-score="{{s}}"
-            bindtap="onRateTap">
-            {{s}}
-          </view>
+      <!-- 枚举：可点选 chips（平铺选项，点选即定分） -->
+      <view class="enum-chips" wx:if="{{item.type === 'enum'}}">
+        <view
+          wx:for="{{item.options}}"
+          wx:key="*this"
+          wx:for-item="opt"
+          wx:for-index="oi"
+          class="chip {{inputs[di][ii] == oi ? 'on' : ''}}"
+          data-di="{{di}}" data-ii="{{ii}}" data-val="{{oi}}"
+          bindtap="onEnumPick">{{opt}}
         </view>
+      </view>
+
+      <!-- 自动评分徽标（由输入/选择自动计算 1-5 分） -->
+      <view class="score-row">
+        <text class="score-lbl">评分</text>
+        <view class="badge {{ratings[di][ii] ? ('b' + ratings[di][ii]) : ''}}">{{ratings[di][ii] || '—'}}</view>
       </view>
     </view>
 
@@ -91,4 +98,17 @@
 
   <button class="btn" bindtap="savePick">保存选品记录</button>
   <view class="hint" style="text-align:center;margin-top:12rpx;">评分数据为演示基准，实际请结合最新市场数据判断。</view>
+
+  <!-- 评分规则弹层（点「?」触发，点遮罩/知道了/✕ 关闭） -->
+  <view wx:if="{{activeRule}}" class="rule-mask" bindtap="closeRule">
+    <view class="rule-sheet" catchtap="noop">
+      <view class="rule-head">
+        <text class="rule-title">{{activeRule.label}}</text>
+        <text class="rule-close" catchtap="closeRule">✕</text>
+      </view>
+      <view class="rule-grade-row" wx:for="{{activeRule.rules.grades}}" wx:key="*this">{{item}}</view>
+      <view class="rule-source">数据获取：{{activeRule.rules.source}}</view>
+      <button class="btn" style="margin-top:24rpx;" catchtap="closeRule">知道了</button>
+    </view>
+  </view>
 </view>
