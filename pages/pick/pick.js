@@ -1,22 +1,15 @@
 const S = require('../../utils/scoring.js')
 const P = require('../../utils/pick.js')
 const { DIMS, autoScore, calcDimWtd, calcTotal, getVerdict, initGrid } = S
+// 国家站点与计算页保持一致（data/fees.js SITES）
+const fees = require('../../data/fees.js')
+const SITE_IDS = fees.SITE_IDS
 
-const COUNTRIES = [
-  { code: 'US', name: '美国' },
-  { code: 'UK', name: '英国' },
-  { code: 'DE', name: '德国' },
-  { code: 'JP', name: '日本' },
-  { code: 'CA', name: '加拿大' },
-  { code: 'FR', name: '法国' },
-  { code: 'IT', name: '意大利' },
-  { code: 'ES', name: '西班牙' }
-]
-
-function countryNames() { return COUNTRIES.map(c => c.name) }
+function countryNames() { return SITE_IDS.map(id => fees.SITES[id].name) }
 function countryStr(i) {
-  const c = COUNTRIES[Number(i)]
-  return c ? `${c.name}(${c.code})` : ''
+  const code = SITE_IDS[Number(i)]
+  const s = fees.SITES[code]
+  return s ? `${s.name}(${s.code})` : ''
 }
 
 Page({
