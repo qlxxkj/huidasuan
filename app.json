@@ -26,8 +26,8 @@
       {
         "pagePath": "pages/pick/pick",
         "text": "选品",
-        "iconPath": "assets/tab-history.png",
-        "selectedIconPath": "assets/tab-history-active.png"
+        "iconPath": "assets/tab-pick.png",
+        "selectedIconPath": "assets/tab-pick-active.png"
       },
       {
         "pagePath": "pages/history/history",
