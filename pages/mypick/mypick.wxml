@@ -26,6 +26,8 @@
   </view>
 
   <button class="btn" bindtap="addNew">＋ 新建选品评分</button>
+  <button class="btn btn-ghost" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" bindtap="exportText">导出文本</button>
+  <button class="btn btn-ghost" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" bindtap="exportCSV">导出 CSV</button>
   <button class="btn btn-ghost" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" open-type="share">分享给好友</button>
   <button class="btn btn-plain" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" bindtap="clearAll">清空选品</button>
 

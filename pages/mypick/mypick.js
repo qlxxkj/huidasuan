@@ -47,6 +47,14 @@ Page({
     })
   },
 
+  exportText() {
+    P.copyToClipboard(P.exportText(P.getRecords()))
+  },
+
+  exportCSV() {
+    P.copyToClipboard(P.exportCSV(P.getRecords()))
+  },
+
   slimRecord(r) {
     return {
       id: r.id, time: r.time, name: r.name || '', country: r.country || '',
