@@ -1,5 +1,4 @@
-const STORAGE_KEY = 'fba_pick_history'
-const MAX_RECORDS = 100
+const P = require('../../utils/pick.js')
 
 // 6 个维度，权重固定。每项指标声明：
 //   数值项 type: 'num-up'(越大越好)/'num-down'(越小越好) + thresholds + unit
@@ -44,8 +43,8 @@ const DIMS = [
         rules: { grades: ['明确可改 = 5分', '部分可改 = 4分', '较难改进 = 3分', '同质化严重 = 2分', '物理不可改 = 1分'],
           source: '提炼共性问题：材质差、尺寸小、易破、异味、安装难…' } },
       { id: 7, label: '体积重量（g，是否轻小）', type: 'num-down', unit: 'g', ph: '重量g',
-        thresholds: { max1: 500, max2: 1200, max3: 2000, max4: 3000 },
-        rules: { grades: ['≤500g = 5分', '501–1200g = 4分', '1201–2000g = 3分', '2001–3000g = 2分', '>3000g = 1分'],
+        thresholds: { max1: 500, max2: 1200, max3: 2000, max4: 5000 },
+        rules: { grades: ['≤500g = 5分', '501–1200g = 4分', '1201–2000g = 3分', '2001–5000g = 2分', '>5000g = 1分'],
           source: '1688 规格 + 包材估重；尺寸判 FBA 档。' } },
       { id: 8, label: '季节性依赖', type: 'enum',
         options: ['无', '弱', '中', '强', '极端'],
@@ -263,11 +262,9 @@ Page({
       verdict: verdict.text,
       time: new Date().toISOString()
     }
-    const list = wx.getStorageSync(STORAGE_KEY) || []
-    list.unshift(record)
-    if (list.length > MAX_RECORDS) list.length = MAX_RECORDS
-    wx.setStorageSync(STORAGE_KEY, list)
-    wx.showToast({ title: '已保存', icon: 'success' })
+    P.addRecord(record)
+    wx.showToast({ title: '已保存', icon: 'success', duration: 1500 })
+    setTimeout(() => wx.reLaunch({ url: '/pages/mine/mine' }), 600)
   },
 
   onShareAppMessage() {

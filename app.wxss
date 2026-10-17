@@ -166,6 +166,7 @@ view, text { box-sizing: border-box; }
 
 .pos { color: #16A34A; }
 .neg { color: #DC2626; }
+.mid { color: #D97706; }
 
 /* 按钮 */
 .btn {

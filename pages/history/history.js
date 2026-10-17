@@ -17,13 +17,6 @@ Page({
       r.timeShort = `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
     })
     this.setData({ records: list })
-
-    // 同步 tabBar 角标
-    if (list.length > 0) {
-      wx.setTabBarBadge({ index: 1, text: String(list.length) })
-    } else {
-      wx.removeTabBarBadge({ index: 1 })
-    }
   },
 
   onTapRecord(e) {

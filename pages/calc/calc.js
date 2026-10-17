@@ -128,7 +128,7 @@ Page({
     wx.setStorageSync(STORAGE_KEY, list)
 
     wx.showToast({ title: '已保存', icon: 'success' })
-    wx.setTabBarBadge({ index: 1, text: String(list.length) })
+    wx.setTabBarBadge({ index: 2, text: String(list.length) })
   },
 
   // 分享给好友：把当前站点/类目带过去，对方打开可快速进入同站点

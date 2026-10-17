@@ -1,0 +1,65 @@
+<!-- pages/mine/mine.wxml -->
+<view class="container">
+
+  <!-- 我的选品 -->
+  <view class="card">
+    <view class="card-title">我的选品 <text class="cnt">共 {{picks.length}} 条</text></view>
+
+    <view wx:if="{{picks.length > 0}}" class="row-actions">
+      <button class="btn btn-ghost" style="flex:1;padding:14rpx 0;font-size:26rpx;" bindtap="clearPicks">清空选品</button>
+    </view>
+
+    <block wx:if="{{picks.length > 0}}">
+      <view wx:for="{{picks}}" wx:key="id" class="rec pick-rec" bindtap="delPick" data-id="{{item.id}}">
+        <view style="display:flex;justify-content:space-between;align-items:center;">
+          <view>
+            <text class="rec-site">{{item.name || '未命名'}}</text>
+            <text class="rec-time">{{item.timeShort}}</text>
+          </view>
+          <text class="rec-profit {{item.empty ? 'neutral' : (parseFloat(item.score) >= 3.8 ? 'pos' : (parseFloat(item.score) < 3.0 ? 'neg' : 'mid'))}}">{{item.empty ? '—' : item.score}}</text>
+        </view>
+        <view class="rec-detail">{{item.country}}{{item.price ? ' · 售价 $' + item.price : ''}} · {{item.empty ? '未评分' : item.verdict}}</view>
+      </view>
+    </block>
+
+    <view wx:if="{{picks.length === 0}}" class="empty">
+      <text style="font-size:80rpx;">🧺</text>
+      <view style="color:#9AA0A6;font-size:26rpx;margin-top:16rpx;">暂无选品，去选品页保存第一条吧</view>
+    </view>
+  </view>
+
+  <!-- 我的利润 -->
+  <view class="card">
+    <view class="card-title">我的利润 <text class="cnt">共 {{profit.length}} 条</text></view>
+
+    <view wx:if="{{profit.length > 0}}" class="row-actions">
+      <button class="btn btn-ghost" style="flex:1;padding:14rpx 0;font-size:26rpx;" bindtap="exportText">导出文本</button>
+      <button class="btn btn-ghost" style="flex:1;padding:14rpx 0;font-size:26rpx;" bindtap="exportCSV">导出 CSV</button>
+      <button class="btn btn-ghost" style="flex:1;padding:14rpx 0;font-size:26rpx;" bindtap="clearProfit">清空</button>
+    </view>
+
+    <block wx:if="{{profit.length > 0}}">
+      <view wx:for="{{profit}}" wx:key="id" class="rec" bindtap="delProfit" data-id="{{item.id}}">
+        <view style="display:flex;justify-content:space-between;align-items:center;">
+          <view>
+            <text class="rec-site">{{item.siteName}} · {{item.currency}}</text>
+            <text class="rec-time">{{item.timeShort}}</text>
+          </view>
+          <text class="rec-profit {{item.netProfit >= 0 ? 'pos' : 'neg'}}">{{item.symbol}}{{item.netProfit}}</text>
+        </view>
+        <view class="rec-detail">
+          售价 {{item.symbol}}{{item.price}} · 总成本 {{item.symbol}}{{item.totalCost}} · 利润率 {{item.profitMargin}}%
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{profit.length === 0}}" class="empty">
+      <text style="font-size:80rpx;">📋</text>
+      <view style="color:#9AA0A6;font-size:26rpx;margin-top:16rpx;">暂无记录，去计算页保存第一单吧</view>
+    </view>
+  </view>
+
+  <view class="hint" style="text-align:center;margin-top:24rpx;">
+    点按记录可删除 · 导出复制到剪贴板
+  </view>
+</view>

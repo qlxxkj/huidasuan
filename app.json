@@ -2,7 +2,8 @@
   "pages": [
     "pages/calc/calc",
     "pages/pick/pick",
-    "pages/history/history"
+    "pages/history/history",
+    "pages/mine/mine"
   ],
   "window": {
     "backgroundColor": "#F5F6FA",
@@ -31,9 +32,15 @@
       },
       {
         "pagePath": "pages/history/history",
-        "text": "历史",
+        "text": "利润",
         "iconPath": "assets/tab-history.png",
         "selectedIconPath": "assets/tab-history-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/tab-mine.png",
+        "selectedIconPath": "assets/tab-mine-active.png"
       }
     ]
   },

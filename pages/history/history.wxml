@@ -2,7 +2,7 @@
 <view class="container">
 
   <view class="card">
-    <view class="card-title">历史记录 <text style="font-size:22rpx;color:#9AA0A6;font-weight:normal;">共 {{records.length}} 条</text></view>
+    <view class="card-title">我的利润 <text style="font-size:22rpx;color:#9AA0A6;font-weight:normal;">共 {{records.length}} 条</text></view>
 
     <!-- 导出操作 -->
     <view wx:if="{{records.length > 0}}" style="display:flex;gap:16rpx;margin-bottom:20rpx;">
