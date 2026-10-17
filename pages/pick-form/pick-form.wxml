@@ -1,4 +1,4 @@
-<!-- pages/pick-detail/pick-detail.wxml -->
+<!-- pages/pick-form/pick-form.wxml -->
 <view class="container">
 
   <!-- 基本信息 -->

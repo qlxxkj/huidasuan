@@ -1,4 +1,5 @@
 /* pages/history/history.wxss */
+
 .rec {
   padding: 20rpx;
   border-radius: 14rpx;

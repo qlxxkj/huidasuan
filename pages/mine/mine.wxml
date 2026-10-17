@@ -3,10 +3,12 @@
 
   <!-- 头像 / 昵称 -->
   <view class="card me">
-    <button class="me__avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <image class="me__avatar" src="{{avatar || '/assets/avatar-default.png'}}" mode="aspectFill" />
+    <view class="me__avatar-wrap">
+      <button class="me__avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image class="me__avatar" src="{{avatar || '/assets/avatar-default.png'}}" mode="aspectFill" />
+      </button>
       <view class="me__badge"><text>✎</text></view>
-    </button>
+    </view>
     <view class="me__info">
       <input
         class="me__name"

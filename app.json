@@ -4,7 +4,8 @@
     "pages/pick/pick",
     "pages/mine/mine",
     "pages/history/history",
-    "pages/pick-detail/pick-detail",
+    "pages/pick-form/pick-form",
+    "pages/mypick/mypick",
     "pages/calc-detail/calc-detail"
   ],
   "window": {

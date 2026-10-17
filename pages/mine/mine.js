@@ -48,7 +48,7 @@ Page({
   },
 
   goPicks() {
-    wx.navigateTo({ url: '/pages/pick/pick' })
+    wx.navigateTo({ url: '/pages/mypick/mypick' })
   },
 
   onShareAppMessage() {

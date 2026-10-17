@@ -1,0 +1,32 @@
+<!-- pages/mypick/mypick.wxml -->
+<view class="container">
+
+  <view class="card">
+    <view class="card-title">我的选品 <text style="font-size:22rpx;color:#9AA0A6;font-weight:normal;">共 {{picks.length}} 条</text></view>
+
+    <block wx:if="{{picks.length > 0}}">
+      <view wx:for="{{picks}}" wx:key="id" class="rec" bindtap="goDetail" data-id="{{item.id}}">
+        <view style="display:flex;justify-content:space-between;align-items:center;">
+          <view>
+            <text class="rec-site">{{item.name || '未命名'}}</text>
+            <text class="rec-time">{{item.timeShort}}</text>
+          </view>
+          <text class="rec-profit {{item.empty ? 'neutral' : (parseFloat(item.score) >= 3.8 ? 'pos' : (parseFloat(item.score) < 3.0 ? 'neg' : 'mid'))}}">{{item.empty ? '—' : item.score}}</text>
+        </view>
+        <view class="rec-detail">
+          {{item.country}}{{item.price ? ' · 售价 $' + item.price : ''}} · {{item.empty ? '未评分' : item.verdict}}
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{picks.length === 0}}" class="empty">
+      <text style="font-size:80rpx;">🧺</text>
+      <view style="color:#9AA0A6;font-size:26rpx;margin-top:16rpx;">暂无选品，去选品页保存第一条吧</view>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="addNew">＋ 新建选品评分</button>
+  <button class="btn btn-plain" style="margin-top:16rpx;" wx:if="{{picks.length > 0}}" bindtap="clearAll">清空选品</button>
+
+  <view class="hint" style="text-align:center;margin-top:24rpx;">点按记录进入详情查看 / 编辑 / 删除</view>
+</view>

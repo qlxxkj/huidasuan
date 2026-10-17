@@ -1,16 +1,22 @@
 /* pages/mine/mine.wxss */
-/* 全局样式见 app.wxss */
 
+/* ---------- 头像 + 昵称（昵称紧贴头像，相机按钮在头像右下角） ---------- */
 .me {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  gap: 16rpx;
+}
+
+.me__avatar-wrap {
+  position: relative;
+  flex: 0 0 120rpx;
+  width: 120rpx;
+  height: 120rpx;
 }
 
 .me__avatar-btn {
-  position: relative;
-  width: 140rpx;
-  height: 140rpx;
+  width: 120rpx;
+  height: 120rpx;
   padding: 0;
   margin: 0;
   border-radius: 50%;
@@ -21,8 +27,8 @@
 .me__avatar-btn::after { border: none; }
 
 .me__avatar {
-  width: 140rpx;
-  height: 140rpx;
+  width: 120rpx;
+  height: 120rpx;
   border-radius: 50%;
   background: #F0F1F5;
   display: block;
@@ -30,39 +36,52 @@
 
 .me__badge {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: -4rpx;
+  bottom: -4rpx;
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  background: #FF9900;
-  color: #fff;
-  font-size: 24rpx;
+  background: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 4rpx solid #fff;
 }
 
-.me__info { flex: 1; min-width: 0; }
+.me__badge text {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  background: #FF9900;
+  color: #fff;
+  font-size: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.me__info {
+  flex: 1;
+  min-width: 0;
+}
 
 .me__name {
-  font-size: 40rpx;
+  font-size: 34rpx;
   font-weight: 700;
   color: #1F2430;
   background: transparent;
   padding: 0;
 }
 
-.me__ph { font-size: 32rpx; color: #9AA0A6; font-weight: 500; }
+.me__ph { font-size: 30rpx; color: #9AA0A6; font-weight: 500; }
 
 .me__stat {
-  margin-top: 12rpx;
+  margin-top: 8rpx;
   font-size: 24rpx;
   color: #9AA0A6;
 }
 
-/* 分组卡片 */
+/* ---------- 分组卡片 ---------- */
 .group { padding: 0 8rpx; }
 
 .row {
@@ -100,7 +119,7 @@
   margin: 0 20rpx;
 }
 
-/* 区块标题 */
+/* ---------- 区块标题 ---------- */
 .section-title {
   margin: 28rpx 8rpx 14rpx;
   font-size: 26rpx;
