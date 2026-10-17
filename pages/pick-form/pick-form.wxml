@@ -55,7 +55,7 @@
           wx:key="*this"
           wx:for-item="opt"
           wx:for-index="oi"
-          class="chip {{inputs[di][ii] == oi ? 'on' : ''}}"
+          class="chip {{inputs[di][ii] != '' && inputs[di][ii] == oi ? 'on' : ''}}"
           data-di="{{di}}" data-ii="{{ii}}" data-val="{{oi}}"
           bindtap="onEnumPick">{{opt}}
         </view>
