@@ -1,0 +1,31 @@
+# 推送 master → 自动用 miniprogram-ci 上传开发版到微信后台。
+# 前置：
+#   1. GitHub 仓库 Settings → Secrets and variables → Actions，新建 secret：
+#        WX_CI_UPLOAD_KEY   值 = 微信后台「开发管理 → 开发设置 → 小程序密钥」的 key 文件内容
+#   2. 该 key 对应的 AppID 必须与 project.config.json 里的一致（wxf74e3c956d353694）
+name: Upload miniprogram (dev build)
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install miniprogram-ci
+        run: npm install miniprogram-ci --no-save
+
+      - name: Upload dev build
+        run: node upload-ci.mjs
+        env:
+          WX_CI_UPLOAD_KEY: ${{ secrets.WX_CI_UPLOAD_KEY }}
