@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/calc/calc",
+    "pages/pick/pick",
     "pages/history/history"
   ],
   "window": {
@@ -21,6 +22,12 @@
         "text": "计算",
         "iconPath": "assets/tab-calc.png",
         "selectedIconPath": "assets/tab-calc-active.png"
+      },
+      {
+        "pagePath": "pages/pick/pick",
+        "text": "选品",
+        "iconPath": "assets/tab-history.png",
+        "selectedIconPath": "assets/tab-history-active.png"
       },
       {
         "pagePath": "pages/history/history",

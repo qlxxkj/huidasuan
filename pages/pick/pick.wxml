@@ -1,0 +1,94 @@
+<!-- pages/pick/pick.wxml -->
+<view class="container">
+
+  <!-- 基本信息 -->
+  <view class="card">
+    <view class="card-title">基本信息</view>
+    <view class="field-row">
+      <view class="field-label">产品名称</view>
+      <input class="inp inp-full" value="{{basic.name}}" data-key="name" bindinput="onBasic" placeholder="产品名" />
+    </view>
+    <view class="field-row">
+      <view class="field-label">销售国家</view>
+      <picker range="{{countryIds}}" value="{{countryIdx}}" bindchange="onCountry">
+        <view class="pick-v">{{countries[countryIdx]}} <text class="sub">▾</text></view>
+      </picker>
+    </view>
+    <view class="field-row">
+      <view class="field-label">预估售价</view>
+      <view class="field-input">
+        <input type="digit" value="{{basic.price}}" data-key="price" bindinput="onBasic" placeholder="0" />
+        <text class="unit">$</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 各维度评分 -->
+  <view wx:for="{{dims}}" wx:key="key" wx:for-item="dim" wx:for-index="di" class="card dim-card {{dim.key === 'profit' ? 'dim-hot' : ''}}">
+    <view class="card-title dim-head">
+      <text>{{dim.label}}</text>
+      <text class="dim-weight {{dim.key === 'profit' ? 'hot' : ''}}">权重 {{dim.weightStr}}</text>
+    </view>
+
+    <view wx:for="{{dim.items}}" wx:key="id" wx:for-item="item" wx:for-index="ii" class="dim-row">
+      <view class="dim-row-top">
+        <view class="dim-id">{{item.id}}</view>
+        <view class="dim-name">{{item.label}}</view>
+      </view>
+
+      <view class="dim-input-row" wx:if="{{item.input}}">
+        <input
+          class="inp dim-inp"
+          type="{{item.inputType || 'digit'}}"
+          value="{{inputs[di][ii]}}"
+          data-dim="{{di}}" data-item="{{ii}}"
+          bindinput="onInputTap"
+          placeholder="{{item.ph || '填写数据'}}"
+        />
+      </view>
+
+      <view class="score-row">
+        <view class="score-lbl">评分</view>
+        <view class="score-chips">
+          <view
+            wx:for="{{[1,2,3,4,5]}}"
+            wx:key="*this"
+            wx:for-item="s"
+            class="chip {{ratings[di][ii] === s ? 'on' : ''}}"
+            data-dim="{{di}}" data-item="{{ii}}" data-score="{{s}}"
+            bindtap="onRateTap">
+            {{s}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="dim-foot">
+      <text class="sub">维度加权合计</text>
+      <text class="dim-foot-val">{{dimWtd[di]}}</text>
+    </view>
+  </view>
+
+  <!-- 综合结果 -->
+  <view class="card result-card">
+    <view class="score-hero {{verdict.cls}}">
+      <view>
+        <view class="label">综合得分</view>
+        <view class="big">{{verdict.score}}</view>
+      </view>
+      <view class="verdict-emoji">{{verdict.emoji}}</view>
+    </view>
+    <view class="verdict-text {{verdict.cls}}">{{verdict.text}}</view>
+
+    <view class="divider"></view>
+    <view class="legend">
+      <view class="legend-row"><text class="sub">≥ 3.8</text><text>优质，优先测款（200-300件）</text></view>
+      <view class="legend-row"><text class="sub">3.3 – 3.7</text><text>合格，需优化后复测</text></view>
+      <view class="legend-row"><text class="sub">3.0 – 3.2</text><text>边缘，视资源决定</text></view>
+      <view class="legend-row"><text class="sub">&lt; 3.0</text><text>直接放弃</text></view>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="savePick">保存选品记录</button>
+  <view class="hint" style="text-align:center;margin-top:12rpx;">评分数据为演示基准，实际请结合最新市场数据判断。</view>
+</view>
