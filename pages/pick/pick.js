@@ -121,7 +121,7 @@ Page({
     countries: COUNTRIES,
     countryIds: COUNTRIES,
     countryIdx: 0,
-    dims,
+    dims: DIMS,
     ratings: initRatings(DIMS),
     inputs: initInputs(DIMS),
     dimWtd: DIMS.map(() => '—'),
