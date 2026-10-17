@@ -1,8 +1,8 @@
 const H = require('../../utils/history.js')
 const P = require('../../utils/pick.js')
 const profile = require('../../utils/profile.js')
-// 版本号与 CI 上传脚本(upload-ci.mjs)读的是同一个 package.json，直接读它最准确
-const APP_VERSION = require('../../package.json').version
+// 版本号在 utils/version.js（运行时读不到根目录 package.json，CI 上传才用 package.json）
+const APP_VERSION = require('../../utils/version.js')
 
 Page({
   data: {
