@@ -102,6 +102,9 @@ Page({
     const record = {
       id: Date.now(),
       site: this.data.site,
+      category: this.data.categories[this.data.categoryIdx].key,
+      form: { ...this.data.form },
+      result: r,
       siteName: this.data.sites[this.data.site].name,
       currency: r.currency,
       symbol: r.symbol,
@@ -128,7 +131,6 @@ Page({
     wx.setStorageSync(STORAGE_KEY, list)
 
     wx.showToast({ title: '已保存', icon: 'success' })
-    wx.setTabBarBadge({ index: 2, text: String(list.length) })
   },
 
   // 分享给好友：把当前站点/类目带过去，对方打开可快速进入同站点

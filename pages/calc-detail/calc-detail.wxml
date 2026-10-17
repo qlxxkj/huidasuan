@@ -1,0 +1,147 @@
+<!-- pages/calc-detail/calc-detail.wxml -->
+<view class="container">
+
+  <!-- 站点 -->
+  <view class="card">
+    <view class="card-title">站点 <text class="sub2">· {{sites[site].code}}</text></view>
+    <view class="site-grid">
+      <view
+        wx:for="{{siteIds}}"
+        wx:key="*this"
+        class="site-chip {{site === item ? 'active' : ''}}"
+        data-site="{{item}}"
+        bindtap="onSiteTap">
+        <text class="flag">{{sites[item].flag}}</text>
+        <text>{{sites[item].name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 售价与类目 -->
+  <view class="card">
+    <view class="card-title">售价与类目</view>
+    <view class="field-row">
+      <view class="field-label">售价</view>
+      <view class="field-input">
+        <input type="digit" value="{{form.price}}" data-key="price" bindinput="onInput" placeholder="0" />
+        <text class="unit">{{sites[site].symbol}}</text>
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">销售类目</view>
+      <view class="field-input">
+        <picker range="{{categories}}" range-key="label" value="{{categoryIdx}}" bindchange="onCategory">
+          <view class="pick-input">{{categories[categoryIdx].label}} · {{categories[categoryIdx].rate}}%</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 成本 -->
+  <view class="card">
+    <view class="card-title">成本项</view>
+    <view class="field-row">
+      <view class="field-label">采购成本 <text class="sub">单件</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.purchaseCost}}" data-key="purchaseCost" bindinput="onInput" placeholder="0" />
+        <text class="unit">{{sites[site].symbol}}</text>
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">头程物流 <text class="sub">单件分摊</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.firstMile}}" data-key="firstMile" bindinput="onInput" placeholder="0" />
+        <text class="unit">{{sites[site].symbol}}</text>
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">FBA 最大边 <text class="sub">cm</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.side}}" data-key="side" bindinput="onInput" placeholder="0" />
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">重量 <text class="sub">g</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.weight}}" data-key="weight" bindinput="onInput" placeholder="0" />
+      </view>
+    </view>
+    <view class="hint">匹配费档：{{result.fbaTierLabel || '—'}}</view>
+  </view>
+
+  <!-- 税务与广告 -->
+  <view class="card">
+    <view class="card-title">税务与广告</view>
+    <view class="field-row">
+      <view class="field-label">增值税 <text class="sub">%(默认{{taxRate}}%)</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.vatRate}}" data-key="vatRate" bindinput="onInput" placeholder="0" />
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">关税 <text class="sub">%(按货值)</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.dutyRate}}" data-key="dutyRate" bindinput="onInput" placeholder="0" />
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">广告 CPC <text class="sub">单点击</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.adCpc}}" data-key="adCpc" bindinput="onInput" placeholder="0" />
+        <text class="unit">{{sites[site].symbol}}</text>
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">月广告预算 <text class="sub">分摊</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.monthlyAds}}" data-key="monthlyAds" bindinput="onInput" placeholder="0" />
+      </view>
+    </view>
+    <view class="field-row">
+      <view class="field-label">其他杂费 <text class="sub">单件</text></view>
+      <view class="field-input">
+        <input type="digit" value="{{form.other}}" data-key="other" bindinput="onInput" placeholder="0" />
+        <text class="unit">{{sites[site].symbol}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 结果 -->
+  <view class="card">
+    <view class="result-hero">
+      <view>
+        <view class="label">单品净利润</view>
+        <view class="big {{result.netProfit >= 0 ? '' : 'neg'}}">{{sites[site].symbol}}{{result.netProfit}}</view>
+      </view>
+      <view style="text-align:right;">
+        <view class="label">利润率</view>
+        <view style="font-size:40rpx;font-weight:700;">{{result.profitMargin}}%</view>
+      </view>
+    </view>
+    <view class="result-grid">
+      <view class="result-cell">
+        <view class="num">{{result.totalCost}}</view>
+        <view class="cap">总成本</view>
+      </view>
+      <view class="result-cell">
+        <view class="num {{result.roi >= 0 ? 'pos' : 'neg'}}">{{result.roi}}%</view>
+        <view class="cap">ROI(对货值)</view>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="kv">
+      <view class="kv-row"><text>佣金({{result.rates.referralRate}}%)</text><text>{{result.symbol}}{{result.referralFee}}</text></view>
+      <view class="kv-row"><text>FBA配送费</text><text>{{result.symbol}}{{result.fbaFee}}</text></view>
+      <view class="kv-row"><text>采购成本</text><text>{{result.symbol}}{{result.purchaseCost}}</text></view>
+      <view class="kv-row"><text>头程物流</text><text>{{result.symbol}}{{result.firstMile}}</text></view>
+      <view class="kv-row"><text>增值税({{result.rates.vatRate}}%)</text><text>{{result.symbol}}{{result.tax}}</text></view>
+      <view class="kv-row"><text>关税({{result.rates.dutyRate}}%)</text><text>{{result.symbol}}{{result.duty}}</text></view>
+      <view class="kv-row"><text>广告费</text><text>{{result.symbol}}{{result.adFee}}</text></view>
+      <view class="kv-row"><text>其他杂费</text><text>{{result.symbol}}{{result.other}}</text></view>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="save">{{isNew ? '保存本单' : '更新本单'}}</button>
+  <button class="btn btn-plain" style="margin-top:16rpx;" wx:if="{{!isNew}}" bindtap="del">删除本单</button>
+  <view class="hint" style="text-align:center;margin-top:12rpx;">费率均为演示基准，请以亚马逊官方最新公告为准。</view>
+</view>

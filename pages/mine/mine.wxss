@@ -1,60 +1,109 @@
 /* pages/mine/mine.wxss */
-/* 全局样式见 app.wxss，这里补充我的页特有样式 */
+/* 全局样式见 app.wxss */
 
-.cnt {
-  font-size: 22rpx;
-  color: #9AA0A6;
-  font-weight: normal;
-  margin-left: 8rpx;
-}
-
-.row-actions {
+.me {
   display: flex;
-  gap: 16rpx;
-  margin-bottom: 20rpx;
+  align-items: center;
+  gap: 20rpx;
 }
 
-.rec {
-  padding: 20rpx;
-  border-radius: 14rpx;
-  background: #F7F8FB;
-  margin-bottom: 16rpx;
+.me__avatar-btn {
   position: relative;
+  width: 140rpx;
+  height: 140rpx;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  overflow: visible;
+  background: transparent;
+  line-height: 1;
+}
+.me__avatar-btn::after { border: none; }
+
+.me__avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: #F0F1F5;
+  display: block;
 }
 
-.rec:active { background: #EEF0F4; }
+.me__badge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: #FF9900;
+  color: #fff;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4rpx solid #fff;
+}
 
-.rec-site {
-  font-size: 28rpx;
-  font-weight: 600;
+.me__info { flex: 1; min-width: 0; }
+
+.me__name {
+  font-size: 40rpx;
+  font-weight: 700;
   color: #1F2430;
-  margin-right: 12rpx;
+  background: transparent;
+  padding: 0;
 }
 
-.rec-time {
-  font-size: 22rpx;
+.me__ph { font-size: 32rpx; color: #9AA0A6; font-weight: 500; }
+
+.me__stat {
+  margin-top: 12rpx;
+  font-size: 24rpx;
   color: #9AA0A6;
 }
 
-.rec-profit {
-  font-size: 34rpx;
-  font-weight: 700;
+/* 分组卡片 */
+.group { padding: 0 8rpx; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 26rpx 20rpx;
 }
 
-.rec-profit.neutral { color: #9AA0A6; }
-.rec-profit.mid { color: #D97706; }
+.row:active { background: #F7F8FB; }
 
-.rec-detail {
-  margin-top: 8rpx;
+.row__emoji { font-size: 36rpx; flex-shrink: 0; }
+
+.row__label {
+  font-size: 28rpx;
+  color: #1F2430;
+  font-weight: 500;
+  flex: 1;
+}
+
+.row__value {
   font-size: 24rpx;
-  color: #6B7280;
+  color: #9AA0A6;
 }
 
-.empty {
-  text-align: center;
-  padding: 60rpx 0;
+.row__arrow {
+  font-size: 36rpx;
+  color: #C7CBD1;
+  flex-shrink: 0;
 }
 
-.empty text:first-child {
-  display: block;
+.hr {
+  height: 2rpx;
+  background: #F0F1F5;
+  margin: 0 20rpx;
+}
+
+/* 区块标题 */
+.section-title {
+  margin: 28rpx 8rpx 14rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #4B5563;
 }

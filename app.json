@@ -2,8 +2,10 @@
   "pages": [
     "pages/calc/calc",
     "pages/pick/pick",
+    "pages/mine/mine",
     "pages/history/history",
-    "pages/mine/mine"
+    "pages/pick-detail/pick-detail",
+    "pages/calc-detail/calc-detail"
   ],
   "window": {
     "backgroundColor": "#F5F6FA",
@@ -29,12 +31,6 @@
         "text": "选品",
         "iconPath": "assets/tab-pick.png",
         "selectedIconPath": "assets/tab-pick-active.png"
-      },
-      {
-        "pagePath": "pages/history/history",
-        "text": "利润",
-        "iconPath": "assets/tab-history.png",
-        "selectedIconPath": "assets/tab-history-active.png"
       },
       {
         "pagePath": "pages/mine/mine",

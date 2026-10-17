@@ -11,14 +11,22 @@ function addRecord(record) {
   const list = getRecords()
   list.unshift(record)
   if (list.length > 100) list.length = 100
-  wx.setStorageSync(STORAGE_KEY, list)
+  saveRecords(list)
   return list
+}
+
+function saveRecords(list) {
+  wx.setStorageSync(STORAGE_KEY, list)
 }
 
 function deleteRecord(id) {
   const list = getRecords().filter(r => r.id !== id)
   wx.setStorageSync(STORAGE_KEY, list)
   return list
+}
+
+function findRecord(id) {
+  return getRecords().find(r => String(r.id) === String(id))
 }
 
 function clearRecords() {
@@ -30,6 +38,8 @@ module.exports = {
   STORAGE_KEY,
   getRecords,
   addRecord,
+  saveRecords,
   deleteRecord,
+  findRecord,
   clearRecords
 }

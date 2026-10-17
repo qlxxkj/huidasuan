@@ -4,14 +4,8 @@
   <view class="card">
     <view class="card-title">我的利润 <text style="font-size:22rpx;color:#9AA0A6;font-weight:normal;">共 {{records.length}} 条</text></view>
 
-    <!-- 导出操作 -->
-    <view wx:if="{{records.length > 0}}" style="display:flex;gap:16rpx;margin-bottom:20rpx;">
-      <button class="btn btn-ghost" style="flex:1;padding:14rpx 0;font-size:26rpx;" bindtap="exportText">导出文本</button>
-      <button class="btn btn-ghost" style="flex:1;padding:14rpx 0;font-size:26rpx;" bindtap="exportCSV">导出 CSV</button>
-    </view>
-
     <block wx:if="{{records.length > 0}}">
-      <view wx:for="{{records}}" wx:key="id" class="rec" bindtap="onTapRecord" data-id="{{item.id}}">
+      <view wx:for="{{records}}" wx:key="id" class="rec" bindtap="goDetail" data-id="{{item.id}}">
         <view style="display:flex;justify-content:space-between;align-items:center;">
           <view>
             <text class="rec-site">{{item.siteName}} · {{item.currency}}</text>
@@ -31,12 +25,10 @@
     </view>
   </view>
 
-  <view wx:if="{{records.length > 0}}">
-    <button class="btn btn-plain" bindtap="clearAll">清空全部记录</button>
-    <button class="btn btn-ghost" style="margin-top:16rpx;" open-type="share">分享给好友</button>
-  </view>
+  <button class="btn" bindtap="addNew">＋ 新建利润单</button>
+  <button class="btn btn-ghost" style="margin-top:16rpx;" wx:if="{{records.length > 0}}" bindtap="exportText">导出文本</button>
+  <button class="btn btn-ghost" style="margin-top:16rpx;" wx:if="{{records.length > 0}}" bindtap="exportCSV">导出 CSV</button>
+  <button class="btn btn-plain" style="margin-top:16rpx;" wx:if="{{records.length > 0}}" bindtap="clearAll">清空全部记录</button>
 
-  <view class="hint" style="text-align:center;margin-top:24rpx;">
-    导出会复制到剪贴板，粘贴到记事本 / Excel 即可保存
-  </view>
+  <view class="hint" style="text-align:center;margin-top:24rpx;">点按记录进入详情查看 / 编辑 / 删除</view>
 </view>

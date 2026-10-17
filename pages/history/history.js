@@ -11,7 +11,6 @@ Page({
 
   load() {
     const list = H.getRecords()
-    // 时间转短格式
     list.forEach(r => {
       const d = new Date(r.time)
       r.timeShort = `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
@@ -19,24 +18,19 @@ Page({
     this.setData({ records: list })
   },
 
-  onTapRecord(e) {
+  // 点卡片 → 详情页（可编辑/查看/删除）
+  goDetail(e) {
     const id = e.currentTarget.dataset.id
-    wx.showModal({
-      title: '删除记录',
-      content: '确认删除这条？',
-      success: (res) => {
-        if (res.confirm) {
-          H.deleteRecord(id)
-          this.load()
-          wx.showToast({ title: '已删除', icon: 'success' })
-        }
-      }
-    })
+    wx.navigateTo({ url: `/pages/calc-detail/calc-detail?id=${id}` })
+  },
+
+  addNew() {
+    wx.navigateTo({ url: '/pages/calc-detail/calc-detail?new=1' })
   },
 
   clearAll() {
     wx.showModal({
-      title: '清空记录',
+      title: '清空利润记录',
       content: `将删除全部 ${this.data.records.length} 条记录，确认？`,
       success: (res) => {
         if (res.confirm) {
@@ -56,11 +50,10 @@ Page({
     H.copyToClipboard(H.exportCSV(H.getRecords()))
   },
 
-  // 分享给好友：带过去历史页
   onShareAppMessage() {
     return {
-      title: 'FBA利润计算器 - 历史记录',
-      path: '/pages/history/history'
+      title: 'FBA利润计算器 - 我的利润',
+      path: '/pages/calc/calc'
     }
   }
 })

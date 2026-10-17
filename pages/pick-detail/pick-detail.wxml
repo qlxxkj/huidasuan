@@ -1,0 +1,111 @@
+<!-- pages/pick-detail/pick-detail.wxml -->
+<view class="container">
+
+  <!-- 基本信息 -->
+  <view class="card">
+    <view class="card-title">基本信息</view>
+    <view class="field-row">
+      <view class="field-label">产品名称</view>
+      <input class="inp inp-full" value="{{basic.name}}" data-key="name" bindinput="onBasic" placeholder="产品名" />
+    </view>
+    <view class="field-row">
+      <view class="field-label">销售国家</view>
+      <picker range="{{countryNames}}" value="{{countryIdx}}" bindchange="onCountry">
+        <view class="pick-v">{{basic.country}} <text class="sub">▾</text></view>
+      </picker>
+    </view>
+    <view class="field-row">
+      <view class="field-label">预估售价</view>
+      <view class="field-input">
+        <input type="digit" value="{{basic.price}}" data-key="price" bindinput="onBasic" placeholder="0" />
+        <text class="unit">$</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 各维度评分 -->
+  <view wx:for="{{dims}}" wx:key="key" wx:for-item="dim" wx:for-index="di" class="card dim-card {{dim.key === 'profit' ? 'dim-hot' : ''}}">
+    <view class="card-title dim-head">
+      <text>{{dim.label}}</text>
+      <text class="dim-weight {{dim.key === 'profit' ? 'hot' : ''}}">权重 {{dim.weightStr}}</text>
+    </view>
+
+    <view wx:for="{{dim.items}}" wx:key="id" wx:for-item="item" wx:for-index="ii" class="dim-row">
+      <view class="dim-row-top">
+        <view class="dim-id">{{item.id}}</view>
+        <view class="dim-name">{{item.label}}</view>
+        <view class="qmark" data-di="{{di}}" data-ii="{{ii}}" bindtap="openRule">?</view>
+      </view>
+
+      <view class="dim-input-row" wx:if="{{item.type !== 'enum'}}">
+        <input
+          class="inp dim-inp"
+          type="digit"
+          value="{{inputs[di][ii]}}"
+          data-di="{{di}}" data-ii="{{ii}}"
+          bindinput="onIndicatorInput"
+          placeholder="{{item.ph || '填写数据'}}"
+        />
+        <text class="unit dim-hint" wx:if="{{item.unit}}">{{item.unit}}</text>
+      </view>
+
+      <view class="enum-chips" wx:if="{{item.type === 'enum'}}">
+        <view
+          wx:for="{{item.options}}"
+          wx:key="*this"
+          wx:for-item="opt"
+          wx:for-index="oi"
+          class="chip {{inputs[di][ii] == oi ? 'on' : ''}}"
+          data-di="{{di}}" data-ii="{{ii}}" data-val="{{oi}}"
+          bindtap="onEnumPick">{{opt}}
+        </view>
+      </view>
+
+      <view class="score-row">
+        <text class="score-lbl">评分</text>
+        <view class="badge {{ratings[di][ii] ? ('b' + ratings[di][ii]) : ''}}">{{ratings[di][ii] || '—'}}</view>
+      </view>
+    </view>
+
+    <view class="dim-foot">
+      <text class="sub">维度加权合计</text>
+      <text class="dim-foot-val">{{dimWtd[di]}}</text>
+    </view>
+  </view>
+
+  <!-- 综合结果 -->
+  <view class="card result-card">
+    <view class="score-hero {{verdict.cls}}">
+      <view>
+        <view class="label">综合得分</view>
+        <view class="big">{{verdict.score}}</view>
+      </view>
+      <view class="verdict-emoji">{{verdict.emoji}}</view>
+    </view>
+    <view class="verdict-text {{verdict.cls}}">{{verdict.text}}</view>
+    <view class="divider"></view>
+    <view class="legend">
+      <view class="legend-row"><text class="sub">≥ 3.8</text><text>优质，优先测款（200-300件）</text></view>
+      <view class="legend-row"><text class="sub">3.3 – 3.7</text><text>合格，需优化后复测</text></view>
+      <view class="legend-row"><text class="sub">3.0 – 3.2</text><text>边缘，视资源决定</text></view>
+      <view class="legend-row"><text class="sub">&lt; 3.0</text><text>直接放弃</text></view>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="save">{{isNew ? '保存选品' : '更新选品'}}</button>
+  <button class="btn btn-plain" style="margin-top:16rpx;" wx:if="{{!isNew}}" bindtap="del">删除本条</button>
+  <view class="hint" style="text-align:center;margin-top:12rpx;">评分数据为演示基准，实际请结合最新市场数据判断。</view>
+
+  <!-- 评分规则弹层 -->
+  <view wx:if="{{activeRule}}" class="rule-mask" bindtap="closeRule">
+    <view class="rule-sheet" catchtap="noop">
+      <view class="rule-head">
+        <text class="rule-title">{{activeRule.label}}</text>
+        <text class="rule-close" catchtap="closeRule">✕</text>
+      </view>
+      <view class="rule-grade-row" wx:for="{{activeRule.rules.grades}}" wx:key="*this">{{item}}</view>
+      <view class="rule-source">数据获取：{{activeRule.rules.source}}</view>
+      <button class="btn" style="margin-top:24rpx;" catchtap="closeRule">知道了</button>
+    </view>
+  </view>
+</view>
