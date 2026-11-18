@@ -1,0 +1,140 @@
+<!-- pages/fx/fx.wxml -->
+<view class="container">
+
+  <!-- 汇率来源状态条 -->
+  <view class="fx-source-bar">
+    <view wx:if="{{loading}}" class="fx-source-loading">
+      <text class="fx-spinner"></text>
+      <text>正在获取实时汇率…</text>
+    </view>
+    <view wx:elif="{{source === 'failed'}}" class="fx-source-failed">
+      <text>网络异常，使用离线内置汇率</text>
+      <text class="fx-refresh-btn" bindtap="refreshRates">刷新</text>
+    </view>
+    <view wx:elif="{{source === 'local'}}" class="fx-source-local">
+      <text>本地缓存 · {{updatedAt}}</text>
+      <text class="fx-refresh-btn" bindtap="refreshRates">刷新</text>
+    </view>
+    <view wx:else class="fx-source-ok">
+      <text class="fx-source-dot"></text>
+      <text>{{source === 'api' ? '实时汇率' : '数据库缓存'}} · {{updatedAt}}</text>
+    </view>
+  </view>
+
+  <!-- 互换区 -->
+  <view class="card">
+    <view class="card-title">币种互换</view>
+
+    <view class="fx-amount-row">
+      <view class="fx-input-wrap">
+        <input
+          type="digit"
+          value="{{amount}}"
+          bindinput="onAmountInput"
+          bindblur="onAmountBlur"
+          placeholder="输入金额"
+          class="fx-amount-input"
+        />
+      </view>
+      <text class="fx-currency-label">{{fromCurrency}}</text>
+    </view>
+
+    <view class="fx-swap-row">
+      <view class="fx-swap-btn" bindtap="onSwap">
+        <text class="fx-swap-icon">⇅</text>
+      </view>
+    </view>
+
+    <view class="fx-result-row">
+      <text class="fx-result-value">{{resultText}}</text>
+      <text class="fx-result-currency">{{toCurrency}}</text>
+    </view>
+
+    <view class="fx-rate-line">
+      1 {{fromCurrency}} = {{rateText}} {{toCurrency}}
+    </view>
+  </view>
+
+  <!-- 币种选择 -->
+  <view class="card">
+    <view class="card-title">选择币种</view>
+
+    <view class="fx-pair-row">
+      <view class="fx-pair-label">从</view>
+      <picker range="{{currencyList}}" range-key="code" value="{{fromIdx}}" bindchange="onFromPick">
+        <view class="fx-pick-box">
+          <text>{{fromCurrency}}</text>
+          <text class="fx-pick-sub">{{currencyList[fromIdx].name}}</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="fx-pair-row">
+      <view class="fx-pair-label">到</view>
+      <picker range="{{currencyList}}" range-key="code" value="{{toIdx}}" bindchange="onToPick">
+        <view class="fx-pick-box">
+          <text>{{toCurrency}}</text>
+          <text class="fx-pick-sub">{{currencyList[toIdx].name}}</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 汇率参考表 -->
+  <view class="card">
+    <view class="card-title">汇率参考 <text class="fx-table-sub">（基于 CNY）</text></view>
+    <view class="fx-table">
+      <view class="fx-table-header">
+        <text class="fx-th">币种</text>
+        <text class="fx-th fx-th-rate">1 CNY =</text>
+        <text class="fx-th fx-th-edit">手动覆盖</text>
+      </view>
+      <view
+        wx:for="{{currencyList}}"
+        wx:key="code"
+        wx:if="{{item.code !== 'CNY'}}"
+        class="fx-table-row"
+      >
+        <text class="fx-td">{{item.code}} {{item.name}}</text>
+        <text class="fx-td fx-td-rate">{{item.rate}}</text>
+        <view class="fx-td fx-td-edit">
+          <input
+            type="digit"
+            value="{{item.customRate}}"
+            data-code="{{item.code}}"
+            bindinput="onRateInput"
+            placeholder="—"
+            class="fx-rate-input"
+          />
+        </view>
+      </view>
+    </view>
+    <view class="fx-table-hint">
+      默认使用实时汇率，可在「手动覆盖」列填写自定义值（填写 0 恢复实时值）。
+    </view>
+  </view>
+
+  <!-- 最近互换 -->
+  <view class="card">
+    <view class="card-title">最近互换</view>
+    <view wx:if="{{history.length === 0}}" class="fx-empty">暂无记录</view>
+    <view
+      wx:for="{{history}}"
+      wx:key="id"
+      class="fx-history-item"
+      data-idx="{{index}}"
+      bindtap="onHistoryTap"
+    >
+      <view class="fx-history-main">
+        <text class="fx-history-amount">{{item.amount}} {{item.from}}</text>
+        <text class="fx-history-arrow">→</text>
+        <text class="fx-history-result">{{item.result}} {{item.to}}</text>
+      </view>
+      <view class="fx-history-sub">
+        <text>1 {{item.from}} = {{item.rate}} {{item.to}}</text>
+        <text class="fx-history-time">{{item.time}}</text>
+      </view>
+    </view>
+  </view>
+
+</view>

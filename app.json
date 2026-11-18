@@ -7,7 +7,8 @@
     "pages/pick-form/pick-form",
     "pages/mypick/mypick",
     "pages/calc-detail/calc-detail",
-    "pages/shared-list/shared-list"
+    "pages/shared-list/shared-list",
+    "pages/fx/fx"
   ],
   "window": {
     "backgroundColor": "#F5F6FA",
@@ -33,6 +34,12 @@
         "text": "选品",
         "iconPath": "assets/tab-pick.png",
         "selectedIconPath": "assets/tab-pick-active.png"
+      },
+      {
+        "pagePath": "pages/fx/fx",
+        "text": "汇率",
+        "iconPath": "assets/tab-fx.png",
+        "selectedIconPath": "assets/tab-fx-active.png"
       },
       {
         "pagePath": "pages/mine/mine",
