@@ -80,11 +80,11 @@
 
   <!-- 货币汇率（可手动覆盖） -->
   <view class="card">
-    <view class="card-title">货币汇率 <text class="fx-table-sub">（1 CNY = 外币）</text></view>
+    <view class="card-title">货币汇率</view>
     <view class="fx-table">
       <view class="fx-table-header">
         <text class="fx-th">币种</text>
-        <text class="fx-th fx-th-rate">汇率（可改）</text>
+        <text class="fx-th fx-th-rate">兑 CNY</text>
         <text class="fx-th fx-th-100">100外币 = CNY</text>
       </view>
       <view
@@ -97,7 +97,7 @@
         <view class="fx-td fx-td-edit">
           <input
             type="digit"
-            value="{{item.customRate ? item.customRate : item.rateDisplay}}"
+            value="{{item.rateDisplay}}"
             data-code="{{item.code}}"
             bindinput="onRateInput"
             placeholder="—"
@@ -108,7 +108,7 @@
       </view>
     </view>
     <view class="fx-table-hint">
-      默认使用实时汇率，可点击「汇率」列手动修改（1 CNY 兑换多少外币，填写 0 恢复实时值）。
+      「兑 CNY」列可手动修改（1 外币 = ? 人民币，填 0 恢复实时值）。
     </view>
   </view>
 

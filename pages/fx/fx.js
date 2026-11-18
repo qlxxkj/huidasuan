@@ -35,9 +35,9 @@ Page({
         code,
         name: fx.CURRENCY_NAMES[code] || code,
         rate,
-        rateDisplay: String(rate),          // 显示用（1 CNY = rate code）
+        rateDisplay: this._per1(rate),      // 1 code = ? CNY
         rate100: this._rate100(rate),       // 100 code = ? CNY
-        customRate: isCustom ? String(rate) : ''
+        customRate: isCustom ? this._per1(rate) : ''
       }
     })
     currencyList.unshift({
@@ -45,7 +45,7 @@ Page({
       name: fx.CURRENCY_NAMES.CNY,
       rate: 1,
       rateDisplay: '1',
-      rate100: 100,
+      rate100: '100',
       customRate: '',
       isBase: true
     })
@@ -53,7 +53,13 @@ Page({
     this.recalc()
   },
 
-  // 100 code 兑 CNY（rate = 1 CNY 兑 rate 个 code）
+  // 1 code = ? CNY（rate = 1 CNY = rate code）
+  _per1(rate) {
+    if (!rate || rate === 1) return '1'
+    return Math.round((1 / rate) * 1000000) / 1000000
+  },
+
+  // 100 code = ? CNY
   _rate100(rate) {
     if (!rate || rate === 1) return '100'
     return Math.round((100 / rate) * 10000) / 10000
@@ -71,7 +77,7 @@ Page({
         const newRate = customRates[item.code] != null ? customRates[item.code] : remoteRate
         return Object.assign({}, item, {
           rate: newRate,
-          rateDisplay: String(newRate),
+          rateDisplay: this._per1(newRate),
           rate100: this._rate100(newRate),
           source
         })
@@ -174,14 +180,15 @@ Page({
       const list = this.data.currencyList.slice()
       list[idx] = Object.assign({}, list[idx], {
         rate: fallbackRate,
-        rateDisplay: String(fallbackRate),
+        rateDisplay: this._per1(fallbackRate),
         rate100: this._rate100(fallbackRate),
         customRate: ''
       })
       this.setData({ currencyList: list })
     } else {
-      const rate = parseFloat(val)
-      if (rate > 0) {
+      const per1 = parseFloat(val)   // 1 code = per1 CNY
+      if (per1 > 0) {
+        const rate = Math.round((1 / per1) * 1000000) / 1000000  // 1 CNY = rate code
         fx.saveCustomRate(code, rate)
         const list = this.data.currencyList.slice()
         list[idx] = Object.assign({}, list[idx], {
