@@ -5,7 +5,7 @@ const MAX_HISTORY = 20
 
 Page({
   data: {
-    amount: '',
+    amount: '100',
     fromIdx: 1,   // USD
     toIdx: 0,     // CNY
     resultText: '0',
