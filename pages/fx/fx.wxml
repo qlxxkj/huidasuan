@@ -27,36 +27,44 @@
 
     <!-- 第一行：输入 + from picker -->
     <view class="fx-exchange-row">
-      <input
-        type="digit"
-        value="{{amount}}"
-        bindinput="onAmountInput"
-        bindblur="onAmountBlur"
-        placeholder="输入金额"
-        class="fx-amount-input"
-      />
-      <picker
-        class="fx-currency-picker"
-        range="{{currencyList}}"
-        range-key="code"
-        value="{{fromIdx}}"
-        bindchange="onFromPick"
-      >
-        <view class="fx-currency-chip">
-          <text class="fx-chip-code">{{fromCurrency}}</text>
-          <text class="fx-chip-name">{{currencyList[fromIdx].name}}</text>
-          <text class="fx-chip-arrow">▾</text>
-        </view>
-      </picker>
+      <view class="fx-left-col">
+        <input
+          type="digit"
+          value="{{amount}}"
+          bindinput="onAmountInput"
+          bindblur="onAmountBlur"
+          placeholder="输入金额"
+          class="fx-amount-input"
+        />
+      </view>
+      <view class="fx-right-col">
+        <picker
+          class="fx-currency-picker"
+          range="{{currencyList}}"
+          range-key="code"
+          value="{{fromIdx}}"
+          bindchange="onFromPick"
+        >
+          <view class="fx-currency-chip">
+            <text class="fx-chip-code">{{fromCurrency}}</text>
+            <text class="fx-chip-name">{{currencyList[fromIdx].name}}</text>
+            <text class="fx-chip-arrow">▾</text>
+          </view>
+        </picker>
+      </view>
     </view>
 
-    <!-- 中间：互换按钮 + 目标行 -->
-    <view class="fx-mid-row">
-      <view class="fx-swap-btn" bindtap="onSwap">
-        <text class="fx-swap-icon">⇅</text>
+    <!-- 第二行：swap + 结果 + to picker -->
+    <view class="fx-exchange-row fx-row-result">
+      <view class="fx-left-col">
+        <view class="fx-result-inner">
+          <view class="fx-swap-btn" bindtap="onSwap">
+            <text class="fx-swap-icon">⇅</text>
+          </view>
+          <text class="fx-result-value">{{resultText}}</text>
+        </view>
       </view>
-      <view class="fx-result-row">
-        <text class="fx-result-value">{{resultText}}</text>
+      <view class="fx-right-col">
         <picker
           class="fx-currency-picker"
           range="{{currencyList}}"
@@ -84,7 +92,7 @@
     <view class="fx-table">
       <view class="fx-table-header">
         <text class="fx-th">币种</text>
-        <text class="fx-th fx-th-rate">兑 CNY</text>
+        <text class="fx-th fx-th-rate">汇率</text>
         <text class="fx-th fx-th-100">100外币 = CNY</text>
       </view>
       <view
@@ -108,7 +116,7 @@
       </view>
     </view>
     <view class="fx-table-hint">
-      「兑 CNY」列可手动修改（1 外币 = ? 人民币，填 0 恢复实时值）。
+      汇率列可手动修改（1 外币 = ? 人民币，填 0 恢复实时值）。
     </view>
   </view>
 

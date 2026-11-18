@@ -79,42 +79,95 @@
   border-radius: 6rpx;
 }
 
-/* 互换区 */
+/* 互换区：两行统一网格，左列 flex:1，右列固定 200rpx */
 .fx-exchange-row {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 16rpx;
-  margin-bottom: 16rpx;
+  margin-bottom: 12rpx;
+}
+
+.fx-exchange-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.fx-left-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.fx-right-col {
+  width: 200rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .fx-amount-input {
-  flex: 1;
-  font-size: 44rpx;
+  width: 100%;
+  font-size: 40rpx;
   font-weight: 700;
   color: #1F2430;
   background: #F5F6FA;
   border-radius: 16rpx;
-  padding: 20rpx 24rpx;
+  padding: 0 24rpx;
   border: 2rpx solid #EEF0F4;
   height: 92rpx;
-  line-height: 44rpx;
+  line-height: 88rpx;
   box-sizing: border-box;
 }
 
-/* 币种 chip（可点击选择） */
-.fx-currency-picker {
+/* 第二行左列：结果 + swap 按钮 */
+.fx-result-inner {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: #F0FDF4;
+  border: 2rpx solid #BBE7C9;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  height: 92rpx;
+  box-sizing: border-box;
+}
+
+.fx-result-value {
+  flex: 1;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #16A34A;
+  line-height: 40rpx;
+}
+
+.fx-swap-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #FFF4E6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+}
+
+.fx-swap-icon {
+  font-size: 28rpx;
+  color: #FF7A00;
+}
+
+/* 币种 chip */
+.fx-currency-picker {
+  width: 100%;
 }
 
 .fx-currency-chip {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  padding: 12rpx 20rpx;
+  gap: 6rpx;
+  width: 100%;
+  padding: 0 20rpx;
   background: #FFF4E6;
   border: 2rpx solid #FFD9B0;
-  border-radius: 999rpx;
-  min-width: 180rpx;
+  border-radius: 16rpx;
   height: 92rpx;
   box-sizing: border-box;
 }
@@ -128,6 +181,7 @@
   font-size: 28rpx;
   font-weight: 700;
   color: #FF7A00;
+  flex-shrink: 0;
 }
 
 .fx-currency-chip-result .fx-chip-code {
@@ -137,7 +191,7 @@
 .fx-chip-name {
   font-size: 22rpx;
   color: #9AA0A6;
-  max-width: 100rpx;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -146,53 +200,7 @@
 .fx-chip-arrow {
   font-size: 20rpx;
   color: #9AA0A6;
-  margin-left: 4rpx;
-}
-
-/* 中间行：swap 按钮 + 结果 */
-.fx-mid-row {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  margin-bottom: 12rpx;
-}
-
-.fx-swap-btn {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: 50%;
-  background: #FFF4E6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(255, 153, 0, 0.2);
   flex-shrink: 0;
-}
-
-.fx-swap-icon {
-  font-size: 36rpx;
-  color: #FF7A00;
-}
-
-.fx-result-row {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  padding: 20rpx 24rpx;
-  background: #F0FDF4;
-  border: 2rpx solid #BBE7C9;
-  border-radius: 16rpx;
-  min-height: 92rpx;
-  box-sizing: border-box;
-}
-
-.fx-result-value {
-  flex: 1;
-  font-size: 44rpx;
-  font-weight: 700;
-  color: #16A34A;
-  line-height: 44rpx;
 }
 
 .fx-rate-line {
