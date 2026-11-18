@@ -79,11 +79,12 @@
   border-radius: 6rpx;
 }
 
-.fx-amount-row {
+/* 互换区 */
+.fx-exchange-row {
   display: flex;
   align-items: center;
   gap: 16rpx;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
 }
 
 .fx-amount-input {
@@ -95,23 +96,65 @@
   border-radius: 16rpx;
   padding: 20rpx 24rpx;
   border: 2rpx solid #EEF0F4;
-  height: 88rpx;
+  height: 92rpx;
   line-height: 44rpx;
+  box-sizing: border-box;
 }
 
-.fx-currency-label {
-  font-size: 28rpx;
-  font-weight: 700;
-  color: #FF7A00;
-  width: 100rpx;
-  text-align: right;
+/* 币种 chip（可点击选择） */
+.fx-currency-picker {
   flex-shrink: 0;
 }
 
-.fx-swap-row {
+.fx-currency-chip {
   display: flex;
-  justify-content: center;
-  margin: 16rpx 0;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 20rpx;
+  background: #FFF4E6;
+  border: 2rpx solid #FFD9B0;
+  border-radius: 999rpx;
+  min-width: 180rpx;
+  height: 92rpx;
+  box-sizing: border-box;
+}
+
+.fx-currency-chip-result {
+  background: #F0FDF4;
+  border-color: #BBE7C9;
+}
+
+.fx-chip-code {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #FF7A00;
+}
+
+.fx-currency-chip-result .fx-chip-code {
+  color: #16A34A;
+}
+
+.fx-chip-name {
+  font-size: 22rpx;
+  color: #9AA0A6;
+  max-width: 100rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fx-chip-arrow {
+  font-size: 20rpx;
+  color: #9AA0A6;
+  margin-left: 4rpx;
+}
+
+/* 中间行：swap 按钮 + 结果 */
+.fx-mid-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 12rpx;
 }
 
 .fx-swap-btn {
@@ -123,6 +166,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4rpx 12rpx rgba(255, 153, 0, 0.2);
+  flex-shrink: 0;
 }
 
 .fx-swap-icon {
@@ -131,31 +175,24 @@
 }
 
 .fx-result-row {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 16rpx;
   padding: 20rpx 24rpx;
-  background: #FFF4E6;
+  background: #F0FDF4;
+  border: 2rpx solid #BBE7C9;
   border-radius: 16rpx;
-  margin-bottom: 8rpx;
-  border: 2rpx solid #FFF4E6;
+  min-height: 92rpx;
+  box-sizing: border-box;
 }
 
 .fx-result-value {
   flex: 1;
   font-size: 44rpx;
   font-weight: 700;
-  color: #FF7A00;
+  color: #16A34A;
   line-height: 44rpx;
-}
-
-.fx-result-currency {
-  font-size: 28rpx;
-  color: #FF7A00;
-  font-weight: 700;
-  width: 100rpx;
-  text-align: right;
-  flex-shrink: 0;
 }
 
 .fx-rate-line {
@@ -164,45 +201,7 @@
   text-align: center;
 }
 
-.fx-pair-row {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  padding: 12rpx 0;
-}
-
-.fx-pair-label {
-  font-size: 28rpx;
-  color: #9AA0A6;
-  width: 48rpx;
-  flex-shrink: 0;
-}
-
-.fx-pick-box {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #F5F6FA;
-  border-radius: 12rpx;
-  padding: 16rpx 20rpx;
-  border: 2rpx solid #EEF0F4;
-  min-height: 88rpx;
-  box-sizing: border-box;
-}
-
-.fx-pick-box text:first-child {
-  font-size: 28rpx;
-  font-weight: 700;
-  color: #1F2430;
-}
-
-.fx-pick-sub {
-  font-size: 24rpx;
-  color: #9AA0A6;
-  margin-left: 16rpx;
-}
-
+/* 汇率表 */
 .fx-table {
   margin-top: 8rpx;
 }
@@ -226,8 +225,8 @@
   flex: 1;
 }
 
-.fx-th-rate { flex: 0.8; text-align: right; }
-.fx-th-edit { flex: 0.8; text-align: right; }
+.fx-th-rate  { flex: 1; text-align: center; }
+.fx-th-100   { flex: 1; text-align: right; }
 
 .fx-td {
   font-size: 26rpx;
@@ -235,23 +234,23 @@
   flex: 1;
 }
 
-.fx-td-rate {
-  flex: 0.8;
+.fx-td-edit {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.fx-td-100 {
+  flex: 1;
   font-weight: 600;
   color: #4B5563;
   text-align: right;
 }
 
-.fx-td-edit {
-  flex: 0.8;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .fx-rate-input {
-  width: 140rpx;
+  width: 160rpx;
   font-size: 24rpx;
-  text-align: right;
+  text-align: center;
   background: #F5F6FA;
   border-radius: 8rpx;
   padding: 8rpx 12rpx;
@@ -272,6 +271,7 @@
   font-weight: normal;
 }
 
+/* 历史 */
 .fx-empty {
   font-size: 26rpx;
   color: #9AA0A6;

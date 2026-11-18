@@ -25,7 +25,8 @@
   <view class="card">
     <view class="card-title">币种互换</view>
 
-    <view class="fx-amount-row">
+    <!-- 第一行：输入 + from picker -->
+    <view class="fx-exchange-row">
       <input
         type="digit"
         value="{{amount}}"
@@ -34,18 +35,42 @@
         placeholder="输入金额"
         class="fx-amount-input"
       />
-      <text class="fx-currency-label">{{fromCurrency}}</text>
+      <picker
+        class="fx-currency-picker"
+        range="{{currencyList}}"
+        range-key="code"
+        value="{{fromIdx}}"
+        bindchange="onFromPick"
+      >
+        <view class="fx-currency-chip">
+          <text class="fx-chip-code">{{fromCurrency}}</text>
+          <text class="fx-chip-name">{{currencyList[fromIdx].name}}</text>
+          <text class="fx-chip-arrow">▾</text>
+        </view>
+      </picker>
     </view>
 
-    <view class="fx-swap-row">
+    <!-- 中间：互换按钮 + 目标行 -->
+    <view class="fx-mid-row">
       <view class="fx-swap-btn" bindtap="onSwap">
         <text class="fx-swap-icon">⇅</text>
       </view>
-    </view>
-
-    <view class="fx-result-row">
-      <text class="fx-result-value">{{resultText}}</text>
-      <text class="fx-result-currency">{{toCurrency}}</text>
+      <view class="fx-result-row">
+        <text class="fx-result-value">{{resultText}}</text>
+        <picker
+          class="fx-currency-picker"
+          range="{{currencyList}}"
+          range-key="code"
+          value="{{toIdx}}"
+          bindchange="onToPick"
+        >
+          <view class="fx-currency-chip fx-currency-chip-result">
+            <text class="fx-chip-code">{{toCurrency}}</text>
+            <text class="fx-chip-name">{{currencyList[toIdx].name}}</text>
+            <text class="fx-chip-arrow">▾</text>
+          </view>
+        </picker>
+      </view>
     </view>
 
     <view class="fx-rate-line">
@@ -53,39 +78,14 @@
     </view>
   </view>
 
-  <!-- 币种选择 -->
+  <!-- 货币汇率（可手动覆盖） -->
   <view class="card">
-    <view class="card-title">选择币种</view>
-
-    <view class="fx-pair-row">
-      <view class="fx-pair-label">从</view>
-      <picker range="{{currencyList}}" range-key="code" value="{{fromIdx}}" bindchange="onFromPick">
-        <view class="fx-pick-box">
-          <text>{{fromCurrency}}</text>
-          <text class="fx-pick-sub">{{currencyList[fromIdx].name}}</text>
-        </view>
-      </picker>
-    </view>
-
-    <view class="fx-pair-row">
-      <view class="fx-pair-label">到</view>
-      <picker range="{{currencyList}}" range-key="code" value="{{toIdx}}" bindchange="onToPick">
-        <view class="fx-pick-box">
-          <text>{{toCurrency}}</text>
-          <text class="fx-pick-sub">{{currencyList[toIdx].name}}</text>
-        </view>
-      </picker>
-    </view>
-  </view>
-
-  <!-- 汇率参考表 -->
-  <view class="card">
-    <view class="card-title">汇率参考 <text class="fx-table-sub">（基于 CNY）</text></view>
+    <view class="card-title">货币汇率 <text class="fx-table-sub">（1 CNY = 外币）</text></view>
     <view class="fx-table">
       <view class="fx-table-header">
         <text class="fx-th">币种</text>
-        <text class="fx-th fx-th-rate">100外币 = CNY</text>
-        <text class="fx-th fx-th-edit">手动覆盖</text>
+        <text class="fx-th fx-th-rate">汇率（可改）</text>
+        <text class="fx-th fx-th-100">100外币 = CNY</text>
       </view>
       <view
         wx:for="{{currencyList}}"
@@ -94,21 +94,21 @@
         class="fx-table-row"
       >
         <text class="fx-td">{{item.code}} {{item.name}}</text>
-        <text class="fx-td fx-td-rate">{{item.rate100}}</text>
         <view class="fx-td fx-td-edit">
           <input
             type="digit"
-            value="{{item.customRate}}"
+            value="{{item.customRate ? item.customRate : item.rateDisplay}}"
             data-code="{{item.code}}"
             bindinput="onRateInput"
             placeholder="—"
             class="fx-rate-input"
           />
         </view>
+        <text class="fx-td fx-td-100">{{item.rate100}}</text>
       </view>
     </view>
     <view class="fx-table-hint">
-      默认使用实时汇率，可在「手动覆盖」列填写 100 外币兑换的人民币数（填写 0 恢复实时值）。
+      默认使用实时汇率，可点击「汇率」列手动修改（1 CNY 兑换多少外币，填写 0 恢复实时值）。
     </view>
   </view>
 

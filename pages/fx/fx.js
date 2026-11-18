@@ -26,50 +26,55 @@ Page({
   },
 
   buildCurrencyList() {
-    const customRates = fx.getCustomRates()
+    const customRates = fx.getCustomRates() || {}
     const codes = Object.keys(fx.BASE_RATES).filter(c => c !== 'CNY')
     const currencyList = codes.map(code => {
-      const rate = customRates ? (customRates[code] || fx.BASE_RATES[code]) : fx.BASE_RATES[code]
+      const isCustom = customRates[code] != null
+      const rate = isCustom ? customRates[code] : fx.BASE_RATES[code]
       return {
         code,
         name: fx.CURRENCY_NAMES[code] || code,
-        rate,        // 1 CNY = rate × code
-        rate100: this._rate100(code, rate)  // 100 code = ? CNY
+        rate,
+        rateDisplay: String(rate),          // 显示用（1 CNY = rate code）
+        rate100: this._rate100(rate),       // 100 code = ? CNY
+        customRate: isCustom ? String(rate) : ''
       }
     })
     currencyList.unshift({
       code: 'CNY',
       name: fx.CURRENCY_NAMES.CNY,
       rate: 1,
+      rateDisplay: '1',
       rate100: 100,
+      customRate: '',
       isBase: true
     })
     this.setData({ currencyList })
     this.recalc()
   },
 
-  // 100 code 兑 CNY = 100 × (1 / rate)，rate 为 1 CNY = rate × code
-  _rate100(code, rate) {
-    if (!rate || rate === 1 || code === 'CNY') return '100'
+  // 100 code 兑 CNY（rate = 1 CNY 兑 rate 个 code）
+  _rate100(rate) {
+    if (!rate || rate === 1) return '100'
     return Math.round((100 / rate) * 10000) / 10000
   },
 
   refreshRates() {
     this.setData({ loading: true, source: 'loading' })
     fx.fetchRemoteRates().then(({ rates, source }) => {
-      const customRates = fx.getCustomRates()
+      const customRates = fx.getCustomRates() || {}
       const list = this.data.currencyList.map(item => {
         if (item.isBase) return item
         const remoteRate = rates[item.code]
-        if (remoteRate != null) {
-          const newRate = customRates && customRates[item.code] ? customRates[item.code] : remoteRate
-          return Object.assign({}, item, {
-            rate: newRate,
-            rate100: this._rate100(item.code, newRate),
-            source: source
-          })
-        }
-        return item
+        if (remoteRate == null) return item
+        // 有自定义则保留，否则用远程值
+        const newRate = customRates[item.code] != null ? customRates[item.code] : remoteRate
+        return Object.assign({}, item, {
+          rate: newRate,
+          rateDisplay: String(newRate),
+          rate100: this._rate100(newRate),
+          source
+        })
       })
       this.setData({
         currencyList: list,
@@ -158,37 +163,34 @@ Page({
   onRateInput(e) {
     const code = e.currentTarget.dataset.code
     const val = e.detail.value
+    const idx = this.data.currencyList.findIndex(c => c.code === code)
+    if (idx < 0) return
+
     if (val === '' || parseFloat(val) === 0) {
-      // 恢复内置（存 1 CNY = rate code，需换算）
-      const idx = this.data.currencyList.findIndex(c => c.code === code)
+      // 填 0 或清空 → 清除自定义，恢复实时/内置
+      fx.saveCustomRate(code, 0)
       const item = this.data.currencyList[idx]
-      const fallbackRate = (item && item.rate) ? item.rate : fx.BASE_RATES[code]
-      fx.saveCustomRate(code, fallbackRate)
-      if (idx >= 0) {
+      const fallbackRate = item.rate || fx.BASE_RATES[code]
+      const list = this.data.currencyList.slice()
+      list[idx] = Object.assign({}, list[idx], {
+        rate: fallbackRate,
+        rateDisplay: String(fallbackRate),
+        rate100: this._rate100(fallbackRate),
+        customRate: ''
+      })
+      this.setData({ currencyList: list })
+    } else {
+      const rate = parseFloat(val)
+      if (rate > 0) {
+        fx.saveCustomRate(code, rate)
         const list = this.data.currencyList.slice()
         list[idx] = Object.assign({}, list[idx], {
-          rate: fallbackRate,
-          rate100: this._rate100(code, fallbackRate),
-          customRate: ''
+          rate,
+          rateDisplay: val,
+          rate100: this._rate100(rate),
+          customRate: val
         })
         this.setData({ currencyList: list })
-      }
-    } else {
-      // val 是 100 code = val CNY，换算成 1 CNY = rate code
-      const valNum = parseFloat(val)
-      if (valNum > 0) {
-        const rate = Math.round((100 / valNum) * 1000000) / 1000000  // 1 CNY = ? code
-        fx.saveCustomRate(code, rate)
-        const idx = this.data.currencyList.findIndex(c => c.code === code)
-        if (idx >= 0) {
-          const list = this.data.currencyList.slice()
-          list[idx] = Object.assign({}, list[idx], {
-            rate,
-            rate100: valNum,
-            customRate: val
-          })
-          this.setData({ currencyList: list })
-        }
       }
     }
     this.recalc()
