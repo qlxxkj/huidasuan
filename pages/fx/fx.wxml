@@ -26,16 +26,14 @@
     <view class="card-title">币种互换</view>
 
     <view class="fx-amount-row">
-      <view class="fx-input-wrap">
-        <input
-          type="digit"
-          value="{{amount}}"
-          bindinput="onAmountInput"
-          bindblur="onAmountBlur"
-          placeholder="输入金额"
-          class="fx-amount-input"
-        />
-      </view>
+      <input
+        type="digit"
+        value="{{amount}}"
+        bindinput="onAmountInput"
+        bindblur="onAmountBlur"
+        placeholder="输入金额"
+        class="fx-amount-input"
+      />
       <text class="fx-currency-label">{{fromCurrency}}</text>
     </view>
 
@@ -51,7 +49,7 @@
     </view>
 
     <view class="fx-rate-line">
-      1 {{fromCurrency}} = {{rateText}} {{toCurrency}}
+      100 {{fromCurrency}} = {{rate100Text}} {{toCurrency}}
     </view>
   </view>
 
@@ -86,7 +84,7 @@
     <view class="fx-table">
       <view class="fx-table-header">
         <text class="fx-th">币种</text>
-        <text class="fx-th fx-th-rate">1 CNY =</text>
+        <text class="fx-th fx-th-rate">100外币 = CNY</text>
         <text class="fx-th fx-th-edit">手动覆盖</text>
       </view>
       <view
@@ -96,7 +94,7 @@
         class="fx-table-row"
       >
         <text class="fx-td">{{item.code}} {{item.name}}</text>
-        <text class="fx-td fx-td-rate">{{item.rate}}</text>
+        <text class="fx-td fx-td-rate">{{item.rate100}}</text>
         <view class="fx-td fx-td-edit">
           <input
             type="digit"
@@ -110,7 +108,7 @@
       </view>
     </view>
     <view class="fx-table-hint">
-      默认使用实时汇率，可在「手动覆盖」列填写自定义值（填写 0 恢复实时值）。
+      默认使用实时汇率，可在「手动覆盖」列填写 100 外币兑换的人民币数（填写 0 恢复实时值）。
     </view>
   </view>
 

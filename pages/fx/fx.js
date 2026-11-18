@@ -10,6 +10,7 @@ Page({
     toIdx: 0,     // CNY
     resultText: '0',
     rateText: '1',
+    rate100Text: '100',
     currencyList: [],
     history: [],
     // 汇率来源状态
@@ -27,32 +28,44 @@ Page({
   buildCurrencyList() {
     const customRates = fx.getCustomRates()
     const codes = Object.keys(fx.BASE_RATES).filter(c => c !== 'CNY')
-    const currencyList = codes.map(code => ({
-      code,
-      name: fx.CURRENCY_NAMES[code] || code,
-      rate: customRates ? (customRates[code] || fx.BASE_RATES[code]) : fx.BASE_RATES[code]
-    }))
+    const currencyList = codes.map(code => {
+      const rate = customRates ? (customRates[code] || fx.BASE_RATES[code]) : fx.BASE_RATES[code]
+      return {
+        code,
+        name: fx.CURRENCY_NAMES[code] || code,
+        rate,        // 1 CNY = rate × code
+        rate100: this._rate100(code, rate)  // 100 code = ? CNY
+      }
+    })
     currencyList.unshift({
       code: 'CNY',
       name: fx.CURRENCY_NAMES.CNY,
       rate: 1,
+      rate100: 100,
       isBase: true
     })
     this.setData({ currencyList })
     this.recalc()
   },
 
+  // 100 code 兑 CNY = 100 × (1 / rate)，rate 为 1 CNY = rate × code
+  _rate100(code, rate) {
+    if (!rate || rate === 1 || code === 'CNY') return '100'
+    return Math.round((100 / rate) * 10000) / 10000
+  },
+
   refreshRates() {
     this.setData({ loading: true, source: 'loading' })
     fx.fetchRemoteRates().then(({ rates, source }) => {
       const customRates = fx.getCustomRates()
-      // 更新 currencyList 的 rate 字段
       const list = this.data.currencyList.map(item => {
         if (item.isBase) return item
         const remoteRate = rates[item.code]
         if (remoteRate != null) {
+          const newRate = customRates && customRates[item.code] ? customRates[item.code] : remoteRate
           return Object.assign({}, item, {
-            rate: customRates && customRates[item.code] ? customRates[item.code] : remoteRate,
+            rate: newRate,
+            rate100: this._rate100(item.code, newRate),
             source: source
           })
         }
@@ -82,6 +95,7 @@ Page({
     const result = fx.convert(amount || 0, from, to, customRates, remoteRates)
     this.setData({
       rateText: rate,
+      rate100Text: Math.round(rate * 100 * 10000) / 10000,
       resultText: result,
       fromCurrency: from,
       toCurrency: to
@@ -145,26 +159,34 @@ Page({
     const code = e.currentTarget.dataset.code
     const val = e.detail.value
     if (val === '' || parseFloat(val) === 0) {
-      fx.saveCustomRate(code, 0)
+      // 恢复内置（存 1 CNY = rate code，需换算）
       const idx = this.data.currencyList.findIndex(c => c.code === code)
+      const item = this.data.currencyList[idx]
+      const fallbackRate = (item && item.rate) ? item.rate : fx.BASE_RATES[code]
+      fx.saveCustomRate(code, fallbackRate)
       if (idx >= 0) {
-        const remoteRates = {}
-        this.data.currencyList.forEach(item => {
-          if (!item.isBase && item.rate) remoteRates[item.code] = item.rate
-        })
-        const fallback = remoteRates[code] || fx.BASE_RATES[code]
         const list = this.data.currencyList.slice()
-        list[idx] = Object.assign({}, list[idx], { rate: fallback, customRate: '' })
+        list[idx] = Object.assign({}, list[idx], {
+          rate: fallbackRate,
+          rate100: this._rate100(code, fallbackRate),
+          customRate: ''
+        })
         this.setData({ currencyList: list })
       }
     } else {
-      const rate = parseFloat(val)
-      if (rate > 0) {
+      // val 是 100 code = val CNY，换算成 1 CNY = rate code
+      const valNum = parseFloat(val)
+      if (valNum > 0) {
+        const rate = Math.round((100 / valNum) * 1000000) / 1000000  // 1 CNY = ? code
         fx.saveCustomRate(code, rate)
         const idx = this.data.currencyList.findIndex(c => c.code === code)
         if (idx >= 0) {
           const list = this.data.currencyList.slice()
-          list[idx] = Object.assign({}, list[idx], { rate, customRate: val })
+          list[idx] = Object.assign({}, list[idx], {
+            rate,
+            rate100: valNum,
+            customRate: val
+          })
           this.setData({ currencyList: list })
         }
       }
